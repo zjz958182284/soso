@@ -149,13 +149,15 @@
 
 
             <TextView
+                android:id="@+id/tv_register"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="注册"
                 android:textColor="@color/white"
                 android:textSize="16sp"
-                android:visibility="visible" />
+                android:visibility="visible"
+                android:contextClickable="true"/>
 
             <TextView
                 android:id="@+id/tv_login_forget_pwd"
