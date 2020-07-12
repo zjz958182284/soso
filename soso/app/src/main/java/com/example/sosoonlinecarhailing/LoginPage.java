@@ -2,6 +2,7 @@ package com.example.sosoonlinecarhailing;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,6 +13,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -31,7 +34,7 @@ import okhttp3.Response;
 import okhttp3.ResponseBody;
 
 public class LoginPage extends AppCompatActivity {
-    public String url="http://3a27001y01.zicp.vip:80";
+    public String url="http://3a27001y01.zicp.vip:80//login?";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,12 +59,15 @@ public class LoginPage extends AppCompatActivity {
 
                 et_login_pwd.clearFocus();
                 // 发送URL请求之前,先进行校验
-                if (!(isTelphoneValid(account) && isPasswordValid(password))) {
-                   Toast.makeText(LoginPage.this, "账号或密码错误", Toast.LENGTH_SHORT).show();
+                if ((isTelphoneValid(account))) {
+                    Toast.makeText(LoginPage.this, "账号错误", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                //进行验证
-                asyncValidate(account, password);
+                else if (!(isPasswordValid(password))){
+                    Toast.makeText(LoginPage.this, "密码错误", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                asyncValidate(account,password);
             }
         });
 
@@ -79,15 +85,16 @@ public class LoginPage extends AppCompatActivity {
 
     // 校验账号不能为空且必须是中国大陆手机号
     private boolean isTelphoneValid(String account) {
-        if (account == null) {
+        if (account == null && account.length()<=11) {
             return false;
         }
-        // 利用正则表达式, 首位为1, 第二位为3-9, 剩下九位为 0-9, 共11位数字
-        String pattern = "^[1]([3-9])[0-9]{9}$";
+        // 利用正则表达式
+        String pattern = "^[1][3,4,5,7,8][0-9]{9}$";
         Pattern r = Pattern.compile(pattern);
         Matcher m = r.matcher(account);
         return m.matches();
     }
+
 
     // 校验密码不少于6位
     private boolean isPasswordValid(String password) {
@@ -126,34 +133,25 @@ public class LoginPage extends AppCompatActivity {
     }
 
 
-    //无法连接数据库
-    //等不到想要的结果，一直返回405
-    public void asyncValidate(String account,String password){
+    //验证账户与密码
+    public void asyncValidate(final String account, final String password){
         new Thread(new Runnable() {
             @Override
             public void run() {
-
                 OkHttpClient okHttpClient=new OkHttpClient();
 //                        .Builder()
 //                        .connectTimeout(10000, TimeUnit.MILLISECONDS)
 //                        .build();
+                //建立表单
                 FormBody formBody =new FormBody
                         .Builder()
-                        .add("tellphone","123456")
-                        .add("password","123456")
+                        .add("telephone",account)
+                        .add("password",password)
                         .build();
-                UserBean userBean=new UserBean();
-                userBean.setTelephone("123456");
-                userBean.setPassword("123456");
-                Gson gson=new Gson();
-                String jsonStr=gson.toJson(userBean);
-                MediaType mediaType=MediaType.parse("application/json");
-                RequestBody requestBody=RequestBody.create(jsonStr,mediaType);
 
                 Request request=new Request
                         .Builder()
                 .post(formBody)
-//                        .get()
                         .url(url)
                         .build();
 
@@ -170,12 +168,23 @@ public class LoginPage extends AppCompatActivity {
                         Log.d("Testing ","code-->"+code);
                         if(code== HttpURLConnection.HTTP_OK){
                             ResponseBody body=response.body();
-                            if(body!=null){
-                                Log.d("Testing","result ==>"+body.string());
+                            String responseBodyStr=body.string();//把内容转成字符串类型
+                            JsonObject responseBodyJsonObject=(JsonObject) new JsonParser().parse(responseBodyStr);
+                            String content=responseBodyJsonObject.get("content").getAsString();//获取content字段的值
+                            System.out.println(content);
+                            if(content.equals("1")){//如果数据为1则为true
+                                showToastInThread(LoginPage.this, "登入成功");
                                 Intent intent =new Intent(LoginPage.this,MainActivity.class);
                                 startActivity(intent);
-
                             }
+                            else{
+                                showToastInThread(LoginPage.this, "登入失败");
+                                return;
+                            }
+                        }
+                        else{
+                            showToastInThread(LoginPage.this, "登入失败");
+                            return;
                         }
                     }
                 });
@@ -183,5 +192,14 @@ public class LoginPage extends AppCompatActivity {
         }).start();
     }
 
+    // 实现在子线程中显示Toast
+    private void showToastInThread(final Context context, final String msg) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
 }

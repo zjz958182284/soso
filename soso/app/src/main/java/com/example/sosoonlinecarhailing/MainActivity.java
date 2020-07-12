@@ -24,15 +24,17 @@ public class MainActivity extends AppCompatActivity {
    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //获取地图控件引用/        mMapView = findViewById(R.id.map);
-        //在activity执行onCreate时执行mMapView.onCreate(savedInstanceState)，创建地图，此方法须覆写，虚拟机需要在很多情况下保存地图绘制的当前状态。/        mMapView.onCreate(savedInstanceState);
+        //获取地图控件引用/
+        mMapView = findViewById(R.id.map);
+        //在activity执行onCreate时执行mMapView.onCreate(savedInstanceState)，创建地图，此方法须覆写，虚拟机需要在很多情况下保存地图绘制的当前状态。/
+        mMapView.onCreate(savedInstanceState);
         //定义了一个地图view
         AMap aMap = null;
-       if (aMap == null) {
-         aMap = mMapView.getMap();
-        } aMap.setTrafficEnabled(true);// 显示实时交通状况
+
+        aMap = mMapView.getMap();
+        aMap.setTrafficEnabled(true);// 显示实时交通状况
         //地图模式可选类型：MAP_TYPE_NORMAL,MAP_TYPE_SATELLITE,MAP_TYPE_NIGHT
-        aMap.setMapType(AMap.MAP_TYPE_SATELLITE);// 卫星地图模式
+        aMap.setMapType(AMap.MAP_TYPE_NORMAL);// 普通地图模式
 
        mUiSettings = aMap.getUiSettings();//实例化UiSettings类对象
         //aMap.setLocationSource(this);//通过aMap对象设置定位数据源的监听

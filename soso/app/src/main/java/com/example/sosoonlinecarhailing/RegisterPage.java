@@ -2,6 +2,7 @@ package com.example.sosoonlinecarhailing;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +12,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -113,6 +116,8 @@ public class RegisterPage extends AppCompatActivity {
         });
     }
 
+
+
     //注册功能
     public void asyncRegister(final String account, final String password, final String city){
         //创建新的进程
@@ -132,7 +137,7 @@ public class RegisterPage extends AppCompatActivity {
                 Gson gson=new Gson();
                 String jsonStr=gson.toJson(userBean);//把userBean实体类转换成字符串形式
                 MediaType mediaType=MediaType.parse("application/json");
-                RequestBody requestBody=RequestBody.create(jsonStr,mediaType);//requestBody是要传输的内容
+                final RequestBody requestBody=RequestBody.create(jsonStr,mediaType);//requestBody是要传输的内容
                 //创建请求内容,传输requestBody的内容
                 Request request=new Request
                         .Builder()
@@ -158,11 +163,23 @@ public class RegisterPage extends AppCompatActivity {
                         if(code== HttpURLConnection.HTTP_OK){//如果状态码为200，表示返回数据成功
                             ResponseBody body=response.body();
                             if(body!=null){//如果返回数据不为空
-                                Log.d("Testing","result ==>"+body.string());//日志显示数据内容
-                                Toast.makeText(RegisterPage.this, "注册成功", Toast.LENGTH_SHORT).show();//通知用户注册成功
-                                //跳转登入界面
-                                Intent intent =new Intent(RegisterPage.this,LoginPage.class);
-                                startActivity(intent);
+//                                Log.d("Testing","result ==>"+body.string());//日志显示数据内容
+                                String responseBodyStr=body.string();//把内容转成字符串类型
+                                JsonObject responseBodyJsonObject=(JsonObject) new JsonParser().parse(responseBodyStr);
+                                String content=responseBodyJsonObject.get("content").getAsString();//获取content字段的值
+                                System.out.println(content);
+                                if(content.equals("1")) {//如果字段的字符串为1
+                                  System.out.println("注册成功");
+                                    showToastInThread(RegisterPage.this, "注册成功");
+                                    Intent intent = new Intent(RegisterPage.this, LoginPage.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                                else{
+                                 System.out.println("注册失败");
+                                 showToastInThread(RegisterPage.this, "注册失败");
+                                    return;
+                                }
 
                             }
                         }
@@ -170,5 +187,16 @@ public class RegisterPage extends AppCompatActivity {
                 });
             }
         }).start();
+    }
+
+
+    // 实现在子线程中显示Toast
+    private void showToastInThread(final Context context, final String msg) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }
