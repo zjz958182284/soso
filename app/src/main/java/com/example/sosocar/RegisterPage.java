@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.sosocar.Entity.UserBean;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -25,7 +26,6 @@ import java.util.regex.Pattern;
 
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -34,7 +34,8 @@ import okhttp3.Response;
 import okhttp3.ResponseBody;
 
 public class RegisterPage extends AppCompatActivity {
-    public String url="http://3a27001y01.zicp.vip:80/registered";
+    //public String url="http://3a27001y01.zicp.vip:80/registered";
+    public String url="http://3r2x705117.zicp.vip//registered";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -134,8 +135,11 @@ public class RegisterPage extends AppCompatActivity {
                         .connectTimeout(10000, TimeUnit.MILLISECONDS)
                         .build();
                //创建Gson,用来解析Json文件
+
+
                 Gson gson=new Gson();
                 String jsonStr=gson.toJson(userBean);//把userBean实体类转换成字符串形式
+                Log.i("json",jsonStr);
                 MediaType mediaType=MediaType.parse("application/json");
                 final RequestBody requestBody=RequestBody.create(jsonStr,mediaType);//requestBody是要传输的内容
                 //创建请求内容,传输requestBody的内容
@@ -166,7 +170,7 @@ public class RegisterPage extends AppCompatActivity {
 //                                Log.d("Testing","result ==>"+body.string());//日志显示数据内容
                                 String responseBodyStr=body.string();//把内容转成字符串类型
                                 JsonObject responseBodyJsonObject=(JsonObject) new JsonParser().parse(responseBodyStr);
-                                String content=responseBodyJsonObject.get("content").getAsString();//获取content字段的值
+                                String content=responseBodyJsonObject.get("status").getAsString();//获取content字段的值
                                 System.out.println(content);
                                 if(content.equals("1")) {//如果字段的字符串为1
                                   System.out.println("注册成功");

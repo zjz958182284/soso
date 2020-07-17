@@ -1,8 +1,12 @@
 package com.example.sosocar;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.widget.RelativeLayout;
@@ -19,19 +23,26 @@ import static com.amap.poisearch.searchmodule.ISearchModule.IDelegate.START_POI_
 
 public class Main2Activity extends AppCompatActivity {
 
+    private static final int WRITE_COARSE_LOCATION_REQUEST_CODE = 255;//这号码没有什么意义
     private TripHostModuleDelegate mTripHostDelegate;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
 
-        RelativeLayout contentView = (RelativeLayout)findViewById(R.id.content_view);
+        RelativeLayout contentView = (RelativeLayout) findViewById(R.id.content_view);
 
         mTripHostDelegate = new TripHostModuleDelegate();
         mTripHostDelegate.bindParentDelegate(mParentTripDelegate);
 
         contentView.addView(mTripHostDelegate.getWidget(this));
         mTripHostDelegate.onCreate(savedInstanceState);
+
+
+        //申请权限
+        requestPermissions();
+
     }
 
     @Override
@@ -202,8 +213,19 @@ public class Main2Activity extends AppCompatActivity {
     /**
      * 在切换为输入模式后，设置模式，触发TripHostDelegate重置
      */
-    private void onBackToInputMode(){
+    private void onBackToInputMode() {
         mTripHostDelegate.setMode(ITripHostModule.IDelegate.INPUT_MODE, mStartPoi);
         mDestPoi = null;
+    }
+
+    //申请权限
+    public void requestPermissions() {
+        //在运行定位之前需要对定位权限进行检查和申请
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            //申请WRITE_EXTERNAL_STORAGE权限
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                    WRITE_COARSE_LOCATION_REQUEST_CODE);//自定义的code
+        }
     }
 }

@@ -34,7 +34,9 @@ import okhttp3.Response;
 import okhttp3.ResponseBody;
 
 public class LoginPage extends AppCompatActivity {
-    public String url="http://3a27001y01.zicp.vip:80//login?";
+   // public String url="http://3a27001y01.zicp.vip:80//login?";
+    public String url="http://3r2x705117.zicp.vip//login?";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +58,7 @@ public class LoginPage extends AppCompatActivity {
                 // 获取用户输入的账号和密码以进行验证
                 String account = et_login_username.getText().toString();
                 String password = et_login_pwd.getText().toString();
-                Intent intent =new Intent(LoginPage.this,Main2Activity.class);
+                Intent intent =new Intent(LoginPage.this,MainActivity.class);
                 startActivity(intent);
 
                 et_login_pwd.clearFocus();

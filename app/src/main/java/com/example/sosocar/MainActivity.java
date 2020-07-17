@@ -143,7 +143,7 @@ public class MainActivity extends AppCompatActivity implements LocationSource, A
         //申请权限
         requestPermissions();
         //开始定位
-        //initLoc();
+        initLoc();
 
         initView();
         initData();

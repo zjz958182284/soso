@@ -1,4 +1,4 @@
-package com.example.sosocar;
+package com.example.sosocar.Entity;
 
 import java.util.ArrayList;
 import java.util.List;

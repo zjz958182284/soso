@@ -1,4 +1,7 @@
-package com.example.sosocar;
+package com.example.sosocar.Entity;
+
+import com.example.sosocar.Entity.DriverBean;
+import com.example.sosocar.Entity.UserBean;
 
 import java.util.Date;
 
