@@ -42,7 +42,7 @@ public class LoginPage extends AppCompatActivity {
         setContentView(R.layout.activity_login_page);
         TextView tv_register=findViewById(R.id.tv_register);//注册字体
         Button bt_login_submit=findViewById(R.id.bt_login_submit);//登入按钮
-        EditText et_login_username=findViewById(R.id.et_login_username);//用户名输入框
+        final EditText et_login_username=findViewById(R.id.et_login_username);//用户名输入框
         final EditText et_login_pwd=findViewById(R.id.et_login_pwd);//密码输入框
 
         setOnFocusChangeErrMsg(et_login_username, "phone", "手机号格式不正确");//当输入账号FocusChange时，校验账号是否是手机号
@@ -54,17 +54,16 @@ public class LoginPage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // 获取用户输入的账号和密码以进行验证
-                String account = et_login_pwd.getText().toString();
+                String account = et_login_username.getText().toString();
                 String password = et_login_pwd.getText().toString();
+                Intent intent =new Intent(LoginPage.this,Main2Activity.class);
+                startActivity(intent);
 
                 et_login_pwd.clearFocus();
                 // 发送URL请求之前,先进行校验
-                if ((isTelphoneValid(account))) {
-                    Toast.makeText(LoginPage.this, "账号错误", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                else if (!(isPasswordValid(password))){
-                    Toast.makeText(LoginPage.this, "密码错误", Toast.LENGTH_SHORT).show();
+
+                if (!(isTelphoneValid(account) && isPasswordValid(password))) {
+                    Toast.makeText(LoginPage.this, "账户或密码不符合要求", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 asyncValidate(account,password);
@@ -174,7 +173,7 @@ public class LoginPage extends AppCompatActivity {
                             System.out.println(content);
                             if(content.equals("1")){//如果数据为1则为true
                                 showToastInThread(LoginPage.this, "登入成功");
-                                Intent intent =new Intent(LoginPage.this,MainActivity.class);
+                                Intent intent =new Intent(LoginPage.this,Main2Activity.class);
                                 startActivity(intent);
                             }
                             else{
@@ -201,5 +200,6 @@ public class LoginPage extends AppCompatActivity {
             }
         });
     }
+
 
 }
