@@ -76,7 +76,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
 
-
     implementation 'com.amap.api:tripmodule:1.0.1'
     implementation 'com.amap.api:poisearchmodule:1.1.1'
+
 }
