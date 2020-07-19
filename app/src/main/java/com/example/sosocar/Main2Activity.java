@@ -66,7 +66,10 @@ public class Main2Activity extends AppCompatActivity {
     private ITripHostModule.IParentDelegate mParentTripDelegate = new ITripHostModule.IParentDelegate() {
         @Override
         public void onIconClick() {
-            showMsg("on icon click");
+            Intent intent=new Intent(Main2Activity.this,MyOrder.class);
+            startActivity(intent);
+
+            ;
         }
 
         @Override
