@@ -26,41 +26,38 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Main2Activity"></activity>
+        <activity android:name=".MyOrder"></activity>
+        <activity android:name=".Main2Activity">
+
+        </activity>
         <activity
             android:name=".ChooseCityActivity"
             android:theme="@style/TranparentTheme"
-            android:windowSoftInputMode="adjustPan">
-        </activity>
-
+            android:windowSoftInputMode="adjustPan"></activity>
         <activity
             android:name=".ChoosePoiActivity"
             android:theme="@style/TranparentTheme"
-            android:windowSoftInputMode="adjustPan">
-        </activity>
-
+            android:windowSoftInputMode="adjustPan"></activity>
         <activity
             android:name=".SetFavAddressActivity"
             android:theme="@style/TranparentTheme"
-            android:windowSoftInputMode="adjustPan">
-        </activity>
-
-        <activity android:name=".RegisterPage" />
-        <!-- 高德地图KEY -->
+            android:windowSoftInputMode="adjustPan"></activity>
+        <activity android:name=".RegisterPage" /> <!-- 高德地图KEY -->
         <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="08e93c5d2dc64d4904c6dc18fd316c0d" /> <!-- 定位需要的服务 适配Android Q需要加上android:foregroundServiceType="location" -->
+            android:value="3a227e3f7090211183beebb9c81ae8f4" /> <!-- 定位需要的服务 适配Android Q需要加上android:foregroundServiceType="location" -->
         <service
             android:name="com.amap.api.location.APSService"
             android:foregroundServiceType="location" />
 
         <activity android:name=".MainActivity" />
-        <activity android:name=".LoginPage">
+        <activity android:name=".LoginPage" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
     </application>
 
