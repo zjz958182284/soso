@@ -45,7 +45,8 @@
             android:windowSoftInputMode="adjustPan">
         </activity>
 
-        <activity android:name=".RegisterPage" /> <!-- 高德地图KEY -->
+        <activity android:name=".RegisterPage" />
+        <!-- 高德地图KEY -->
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="08e93c5d2dc64d4904c6dc18fd316c0d" /> <!-- 定位需要的服务 适配Android Q需要加上android:foregroundServiceType="location" -->
