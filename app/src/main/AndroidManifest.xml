@@ -43,9 +43,12 @@
             android:theme="@style/TranparentTheme"
             android:windowSoftInputMode="adjustPan"></activity>
         <activity android:name=".RegisterPage" /> <!-- 高德地图KEY -->
+
+        <!--  郑健宙的key:3a227e3f7090211183beebb9c81ae8f4-->
+        <!--  林锋吉的key:08e93c5d2dc64d4904c6dc18fd316c0d-->
         <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="3a227e3f7090211183beebb9c81ae8f4" /> <!-- 定位需要的服务 适配Android Q需要加上android:foregroundServiceType="location" -->
+            android:value="08e93c5d2dc64d4904c6dc18fd316c0d" /> <!-- 定位需要的服务 适配Android Q需要加上android:foregroundServiceType="location" -->
         <service
             android:name="com.amap.api.location.APSService"
             android:foregroundServiceType="location" />
