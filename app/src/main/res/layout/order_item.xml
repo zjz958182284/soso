@@ -56,11 +56,12 @@
             app:layout_constraintLeft_toRightOf="@id/order_time"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
+        <ImageButton
+            android:id="@+id/goto_order_detail"
             android:layout_width="wrap_content"
-            android:layout_height="22dp"
+            android:layout_height="14dp"
             android:layout_marginLeft="104dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="28dp"
             android:layout_marginRight="10dp"
             android:src="@drawable/cursor_right"
             app:layout_constraintLeft_toLeftOf="@id/order_status"

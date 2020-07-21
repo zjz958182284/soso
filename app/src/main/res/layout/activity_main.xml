@@ -1,76 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:id="@+id/main_drawer"
+    android:layout_height="match_parent">
 
-    <com.amap.api.maps.MapView
-        android:id="@+id/map"
+    <RelativeLayout
         android:layout_width="match_parent"
+
         android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        <include layout="@layout/left_drawer_main_content"/>
 
-            <EditText
-                android:id="@+id/et_starting_place"
-                android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginRight="20dp"
-                android:background="@color/white"
-                android:ems="10"
-                android:hint="起始地址"
-                android:inputType="textPersonName"
-                app:layout_constraintBottom_toTopOf="@id/horizontal_line"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent" />
-
-            <View
-                android:id="@+id/horizontal_line"
-                android:layout_width="match_parent"
-                android:layout_height="0.5dip"
-                android:layout_marginStart="20dp"
-                android:background="#ccc"
-
-                app:layout_constraintBottom_toTopOf="@id/et_destination"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent" />
-
-            <EditText
-                android:id="@+id/et_destination"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginBottom="100dp"
-                android:background="@color/white"
-                android:ems="10"
-                android:hint="你要去哪儿"
-                android:inputType="textPersonName"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent" />
-
-            <Button
-                android:id="@+id/put"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="放入车"
-                app:layout_constraintLeft_toLeftOf="parent" />
-
-            <Button
-                android:id="@+id/run"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/put"
-                android:text="跑"
-                app:layout_constraintLeft_toRightOf="@id/put" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </com.amap.api.maps.MapView>
+    </RelativeLayout>
 
 
-</FrameLayout>
+
+
+    <FrameLayout
+        android:layout_width="280dp"
+        android:layout_gravity="left"
+        android:layout_height="match_parent">
+
+        <include layout="@layout/left_drawer_menu"/>
+
+
+    </FrameLayout>
+
+
+</androidx.drawerlayout.widget.DrawerLayout>

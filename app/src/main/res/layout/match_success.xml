@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="8dp"
+
+    android:layout_margin="13dp"
+    android:layout_height="220dp">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="17dp"
+                android:background="@color/white"
+                android:orientation="vertical">
+                
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="28dp"
+                    android:textColor="#FF101010"
+                    android:textStyle="bold"
+                    android:text="司机已接单"/>
+                    
+                    <Button
+                        android:id="@+id/success_cancel_order"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:background="@drawable/button_border_gray"
+                        android:text="取消订单"
+                        android:textColor="@color/gray"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="95dp"/>
+                        
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:textSize="15dp"
+                    android:textColor="@color/gray"
+                    android:text="快车司机正努力赶来，请在上车地点等候"/>
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginTop="15dp"
+                    android:background="@color/font_hint"/>
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:padding="5dp"
+                    android:layout_height="match_parent">
+
+
+                    <com.example.sosocar.View.CircleImageView
+                        android:id="@+id/driver_icon"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:src="@drawable/person_icon"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/car_number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginTop="4dp"
+                        android:text="鄂FAF011"
+                        android:textColor="#FF101010"
+                        android:textSize="28dp"
+                        android:textStyle="bold"
+                        app:layout_constraintLeft_toRightOf="@id/driver_icon"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/car_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:text="黑色桑塔纳"
+                        android:textColor="@color/gray"
+                        android:textSize="14dp"
+                        app:layout_constraintLeft_toRightOf="@id/driver_icon"
+                        app:layout_constraintTop_toBottomOf="@id/car_number" />
+
+
+                    <TextView
+                        android:id="@+id/car_type"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="96dp"
+                        android:text="大众"
+                        android:textColor="@color/gray"
+                        android:textSize="14dp"
+                        app:layout_constraintLeft_toRightOf="@id/driver_icon"
+                        app:layout_constraintTop_toBottomOf="@id/car_number" />
+
+                    <TextView
+                        android:layout_width="1dp"
+                        android:layout_height="16dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginLeft="8dp"
+                        android:background="@color/gray"
+                        app:layout_constraintLeft_toRightOf="@id/car_name"
+                        app:layout_constraintTop_toBottomOf="@id/car_number" />
+
+                    <ImageButton
+                        android:id="@+id/calling"
+                        android:layout_width="60dp"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="16dp"
+                        android:src="@drawable/calling"
+                        android:scaleType="fitCenter"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/driver_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="72dp"
+                        android:layout_marginTop="8dp"
+                        android:text="胡师傅"
+                        android:textColor="@color/gray"
+                        android:textSize="14dp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/car_name" />
+
+                    <RatingBar
+                        android:id="@+id/driver_rating_star"
+                        style="@style/Widget.AppCompat.RatingBar.Small"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginTop="10dp"
+                        android:isIndicator="true"
+                        android:numStars="5"
+                        android:progressTint="#FFFF580E"
+                        android:rating="3.5"
+                        android:stepSize="0.5"
+
+                        app:layout_constraintLeft_toRightOf="@id/driver_name"
+                        app:layout_constraintTop_toBottomOf="@id/car_type" />
+
+                    <TextView
+                        android:id="@+id/driver_grade"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginTop="21dp"
+                        android:text="5.0分"
+                        android:textColor="#FFFF5810"
+                        android:textSize="12dp"
+                        app:layout_constraintLeft_toRightOf="@id/driver_rating_star"
+                        app:layout_constraintTop_toBottomOf="@id/calling"/>
+
+                    <TextView
+                        android:id="@+id/driver_order_num"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginTop="21dp"
+                        android:text="9651单"
+                        android:textColor="#FFFF5810"
+                        android:textSize="12dp"
+                        app:layout_constraintLeft_toRightOf="@id/driver_grade"
+                        app:layout_constraintTop_toBottomOf="@id/calling"/>
+
+
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </LinearLayout>
+
+
+
+
+
+
+</androidx.cardview.widget.CardView>

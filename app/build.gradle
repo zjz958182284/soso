@@ -45,12 +45,25 @@ android {
         }
     }
 
+    allprojects {
+
+        repositories {
+
+            maven { url 'https://jitpack.io' }
+
+        }
+
+    }
+
+
+
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     //日志框架LogUtils
     implementation 'com.apkfuns.logutils:library:1.7.5'
+    implementation 'com.github.giswangsj:AndRatingBar:v1.0.0'
 
 
     //OkHttp
