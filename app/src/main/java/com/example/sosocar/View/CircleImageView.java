@@ -1,5 +1,5 @@
 
-package com.example.sosocar;
+package com.example.sosocar.View;
 
 
 

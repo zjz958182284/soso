@@ -55,11 +55,15 @@ public class LoginPage extends AppCompatActivity {
         bt_login_submit.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+
                 // 获取用户输入的账号和密码以进行验证
                 String account = et_login_username.getText().toString();
                 String password = et_login_pwd.getText().toString();
-                Intent intent =new Intent(LoginPage.this,Main2Activity.class);
+
+
+                Intent intent =new Intent(LoginPage.this,MainActivity.class);
                 startActivity(intent);
+
 
                 et_login_pwd.clearFocus();
                 // 发送URL请求之前,先进行校验
@@ -175,7 +179,7 @@ public class LoginPage extends AppCompatActivity {
                             System.out.println(content);
                             if(content.equals("1")){//如果数据为1则为true
                                 showToastInThread(LoginPage.this, "登入成功");
-                                Intent intent =new Intent(LoginPage.this,Main2Activity.class);
+                                Intent intent =new Intent(LoginPage.this,MainActivity.class);
                                 startActivity(intent);
                             }
                             else{

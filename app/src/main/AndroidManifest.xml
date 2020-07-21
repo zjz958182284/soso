@@ -26,22 +26,21 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".MyOrder"></activity>
-        <activity android:name=".Main2Activity">
-
-        </activity>
+        <activity android:name=".MyInfo"></activity>
+        <activity android:name=".MyOrder" />
+        <activity android:name=".Main2Activity"></activity>
         <activity
             android:name=".ChooseCityActivity"
             android:theme="@style/TranparentTheme"
-            android:windowSoftInputMode="adjustPan"></activity>
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ChoosePoiActivity"
             android:theme="@style/TranparentTheme"
-            android:windowSoftInputMode="adjustPan"></activity>
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".SetFavAddressActivity"
             android:theme="@style/TranparentTheme"
-            android:windowSoftInputMode="adjustPan"></activity>
+            android:windowSoftInputMode="adjustPan" />
         <activity android:name=".RegisterPage" /> <!-- 高德地图KEY -->
         <meta-data
             android:name="com.amap.api.v2.apikey"
@@ -51,13 +50,12 @@
             android:foregroundServiceType="location" />
 
         <activity android:name=".MainActivity" />
-        <activity android:name=".LoginPage" >
+        <activity android:name=".LoginPage">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
     </application>
 

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="8dp"
+    android:layout_margin="10dp"
+    android:layout_height="180dp">
+
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:background="@color/white"
+    android:padding="10dp"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="预计很快匹配到司机"
+            android:textSize="21dp"
+            android:textStyle="bold"/>
+
+        <ProgressBar
+            android:layout_width="20dp"
+            android:layout_height="match_parent"
+            android:progressTint="#FF1778FB"
+            android:progressBackgroundTint="#FF1778FB"
+            android:layout_marginLeft="5dp"/>
+
+        <Button
+            android:id="@+id/cancel_match"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:background="@drawable/button_border_gray"
+            android:text="取消用车"
+            android:textColor="#FF0F100F"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="40dp"/>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/font_hint"
+        android:text="请稍作等待。请戴好口罩，安全出行"
+        android:layout_marginTop="3dp"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="112dp"
+            android:layout_marginTop="48dp"
+            android:text="约等"
+            android:textColor="@color/font_hint"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="148dp"
+            android:layout_marginTop="36dp"
+            android:gravity="bottom"
+            android:text="00:"
+            android:textColor="#000000"
+            android:textSize="25dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/count_down"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="182dp"
+            android:layout_marginTop="36dp"
+            android:gravity="bottom"
+            android:text="29"
+            android:textColor="#000000"
+            android:textSize="25dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</LinearLayout>
+
+</androidx.cardview.widget.CardView>

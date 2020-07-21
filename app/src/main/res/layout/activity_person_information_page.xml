@@ -48,7 +48,7 @@
             android:layout_height="180dp"
             android:background="@mipmap/person_background"/>
 
-        <com.example.sosocar.CircleImageView
+        <com.example.sosocar.View.CircleImageView
             android:id="@+id/h_head"
             android:layout_width="80dp"
             android:layout_height="80dp"

@@ -3,15 +3,21 @@ package com.example.sosocar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
@@ -49,6 +55,15 @@ import java.util.Random;
 
 public class MainActivity extends AppCompatActivity implements LocationSource, AMapLocationListener {
 
+    //布局控件
+    private DrawerLayout mDrawerLayout;
+    private LinearLayout mTrip,mAccount,mInfo,mOrigin,mDestination,mReserveTime;
+    private ImageButton my;
+    private RadioGroup mSelectType;
+
+    private int currentOrderType=R.id.now_go;
+
+
     private static final int WRITE_COARSE_LOCATION_REQUEST_CODE = 255;//这号码没有什么意义
     private final String TAG = this.getClass().getName();
     private String address;//地址
@@ -84,6 +99,9 @@ public class MainActivity extends AppCompatActivity implements LocationSource, A
    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        initWidget();
+
         //获取地图控件引用/
         mMapView = findViewById(R.id.map);
         //在activity执行onCreate时执行mMapView.onCreate(savedInstanceState)，创建地图，此方法须覆写，虚拟机需要在很多情况下保存地图绘制的当前状态。/
@@ -145,8 +163,58 @@ public class MainActivity extends AppCompatActivity implements LocationSource, A
         //开始定位
         initLoc();
 
-        initView();
+        //initView();
         initData();
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode,int resultCode,Intent data) {
+
+
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    //初始化控件
+    private void initWidget(){
+        mDrawerLayout=findViewById(R.id.main_drawer);
+        mAccount=findViewById(R.id.mywallet);
+        mInfo=findViewById(R.id.myinfo);
+        my=findViewById(R.id.my);
+        mDestination=findViewById(R.id.select_destination);
+        mOrigin=findViewById(R.id.select_origin);
+        mReserveTime=findViewById(R.id.select_time);
+        mSelectType=findViewById(R.id.radio_group);
+        mTrip=findViewById(R.id.mytrip);
+
+        my.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    mDrawerLayout.openDrawer(Gravity.LEFT);
+            }
+        });
+
+        // 跳向订单页
+
+        mTrip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    Intent intent = new Intent(MainActivity.this, MyOrder.class);
+                    startActivity(intent);
+                    //重置 是防止重复点击生效
+
+            }
+        });
+
+        //跳向个人信息页
+
+        mInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    Intent intent = new Intent(MainActivity.this, MyInfo.class);
+                    startActivity(intent);
+            }
+        });
     }
 
     //定位
@@ -228,6 +296,8 @@ public class MainActivity extends AppCompatActivity implements LocationSource, A
         }
     }
 
+
+
     //自定义一个图钉，并且设置图标，当我们点击图钉时，显示设置的信息
     private MarkerOptions getMarkerOptions(AMapLocation amapLocation) {
         //设置图钉选项
@@ -280,85 +350,86 @@ public class MainActivity extends AppCompatActivity implements LocationSource, A
     }
 
 
+    /**
+     * 林锋吉
+     */
 
-
-
-    private void initView() {
-        Button put = (Button) findViewById(R.id.put);
-        Button run = (Button) findViewById(R.id.run);
-
-        //放入静态车辆
-        put.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //清空地图覆盖物
-                if (smoothMarkers != null) {//清空动态marker
-                    for (int i = 0; i < smoothMarkers.size(); i++) {
-                        smoothMarkers.get(i).destroy();
-                    }
-                }
-                //清除旧集合
-                if (showMarks == null) {
-                    showMarks = new ArrayList<Marker>();
-                }
-                for (int j = 0; j < showMarks.size(); j++) {
-                    showMarks.get(j).remove();
-                }
-                //依次放入静态图标
-                for (int i = 0; i < carsLatLng.size(); i++) {
-                    BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.car_up);
-                    lng = Double.valueOf(carsLatLng.get(i).longitude);
-                    lat = Double.valueOf(carsLatLng.get(i).latitude);
-                    MarkerOptions markerOptions = new MarkerOptions();
-                    markerOptions.position(new LatLng(lat, lng))
-                            .icon(icon);
-                    showMarks.add(aMap.addMarker(markerOptions));
-                    Animation startAnimation = new AlphaAnimation(0, 1);
-                    startAnimation.setDuration(600);
-                    //设置所有静止车的角度
-//                            showMarks.get(i).setRotateAngle(Float.valueOf(listBaseBean.datas.get(i).angle));
-                    showMarks.get(i).setAnimation(startAnimation);
-                    showMarks.get(i).setRotateAngle(new Random().nextInt(359));
-                    showMarks.get(i).startAnimation();
-                }
-            }
-        });
-
-
-        /**
-         * 展示平滑移动车辆
-         */
-        run.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (smoothMarkers != null) {//清空动态marker
-                    for (int i = 0; i < smoothMarkers.size(); i++) {
-                        smoothMarkers.get(i).destroy();
-                    }
-                }
-                //清除旧集合
-                if (showMarks == null) {
-                    showMarks = new ArrayList<Marker>();
-                }
-                //清除静态marker
-                for (int j = 0; j < showMarks.size(); j++) {
-                    showMarks.get(j).remove();
-                }
-                smoothMarkers = null;//清空旧数据
-                smoothMarkers = new ArrayList<SmoothMoveMarker>();
-                BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.car_up);
-                //循环
-                for (int i = 0; i < carsLatLng.size(); i++) {
-                    //放入路线
-                    double[] newoords = {Double.valueOf(carsLatLng.get(i).longitude), Double.valueOf(carsLatLng.get(i).latitude),
-                            Double.valueOf(goLatLng.get(i).longitude), Double.valueOf(goLatLng.get(i).latitude)};
-                    coords = newoords;
-                    //移动车辆
-                    movePoint(icon);
-                }
-            }
-        });
-    }
+//    private void initView() {
+//       Button put = (Button) findViewById(R.id.put);
+//        Button run = (Button) findViewById(R.id.run);
+//
+//        //放入静态车辆
+//        put.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                //清空地图覆盖物
+//                if (smoothMarkers != null) {//清空动态marker
+//                    for (int i = 0; i < smoothMarkers.size(); i++) {
+//                        smoothMarkers.get(i).destroy();
+//                    }
+//                }
+//                //清除旧集合
+//                if (showMarks == null) {
+//                    showMarks = new ArrayList<Marker>();
+//                }
+//                for (int j = 0; j < showMarks.size(); j++) {
+//                    showMarks.get(j).remove();
+//                }
+//                //依次放入静态图标
+//                for (int i = 0; i < carsLatLng.size(); i++) {
+//                    BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.car_up);
+//                    lng = Double.valueOf(carsLatLng.get(i).longitude);
+//                    lat = Double.valueOf(carsLatLng.get(i).latitude);
+//                    MarkerOptions markerOptions = new MarkerOptions();
+//                    markerOptions.position(new LatLng(lat, lng))
+//                            .icon(icon);
+//                    showMarks.add(aMap.addMarker(markerOptions));
+//                    Animation startAnimation = new AlphaAnimation(0, 1);
+//                    startAnimation.setDuration(600);
+//                    //设置所有静止车的角度
+////                            showMarks.get(i).setRotateAngle(Float.valueOf(listBaseBean.datas.get(i).angle));
+//                    showMarks.get(i).setAnimation(startAnimation);
+//                    showMarks.get(i).setRotateAngle(new Random().nextInt(359));
+//                    showMarks.get(i).startAnimation();
+//                }
+//            }
+//        });
+//
+//
+//        /**
+//         * 展示平滑移动车辆
+//         */
+//        run.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (smoothMarkers != null) {//清空动态marker
+//                    for (int i = 0; i < smoothMarkers.size(); i++) {
+//                        smoothMarkers.get(i).destroy();
+//                    }
+//                }
+//                //清除旧集合
+//                if (showMarks == null) {
+//                    showMarks = new ArrayList<Marker>();
+//                }
+//                //清除静态marker
+//                for (int j = 0; j < showMarks.size(); j++) {
+//                    showMarks.get(j).remove();
+//                }
+//                smoothMarkers = null;//清空旧数据
+//                smoothMarkers = new ArrayList<SmoothMoveMarker>();
+//                BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.car_up);
+//                //循环
+//                for (int i = 0; i < carsLatLng.size(); i++) {
+//                    //放入路线
+//                    double[] newoords = {Double.valueOf(carsLatLng.get(i).longitude), Double.valueOf(carsLatLng.get(i).latitude),
+//                            Double.valueOf(goLatLng.get(i).longitude), Double.valueOf(goLatLng.get(i).latitude)};
+//                    coords = newoords;
+//                    //移动车辆
+//                    movePoint(icon);
+//                }
+//            }
+//        });
+//    }
 
     private void initData() {
         //出发地

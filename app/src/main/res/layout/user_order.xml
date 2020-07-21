@@ -13,10 +13,10 @@
     android:background="@color/white">
 
         <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
             android:layout_marginLeft="18dp"
-            android:layout_marginTop="44dp"
+            android:layout_marginTop="52dp"
             app:srcCompat="@drawable/cursor_left" />
 
         <TextView
