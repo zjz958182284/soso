@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="15dp"
+    android:layout_margin="10dp"
+    android:background="@drawable/white_border"
+    android:layout_width="match_parent"
+    android:layout_height="220dp">
+    
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="快车"
+        android:textSize="20dp"
+        android:layout_gravity="center_horizontal"/>
+
+    <ImageView
+        android:layout_width="140dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/car1"
+        android:scaleType="fitXY"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="预估"
+            android:textSize="14dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="7.1"
+            android:textSize="20dp"
+            android:textColor="#FFFF5810"
+            android:textStyle="bold"
+            android:layout_gravity="center_horizontal"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="元"
+            android:textSize="14dp"
+            android:layout_gravity="center_vertical"/>
+
+    </LinearLayout>
+    <Button
+        android:id="@+id/hail_car"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+
+        android:layout_gravity="center_horizontal"
+        android:textColor="@color/white"
+        android:text="呼 叫 快 车"
+        android:textSize="16dp"
+        android:background="@drawable/cancel_reason_button"/>
+
+
+</LinearLayout>
