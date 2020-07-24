@@ -1,21 +1,15 @@
 package com.example.sosocar;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.SystemClock;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -29,13 +23,13 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.alibaba.fastjson.JSONObject;
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.CameraUpdateFactory;
-import com.amap.api.maps.LocationSource;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.UiSettings;
 import com.amap.api.maps.model.LatLng;
@@ -43,15 +37,13 @@ import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.MyLocationStyle;
 import com.amap.api.services.core.LatLonPoint;
-import com.amap.api.services.core.PoiItem;
-import com.amap.api.services.poisearch.PoiResult;
-import com.amap.api.services.poisearch.PoiSearch;
 import com.amap.api.services.route.BusRouteResult;
 import com.amap.api.services.route.DrivePath;
 import com.amap.api.services.route.DriveRouteResult;
 import com.amap.api.services.route.RideRouteResult;
 import com.amap.api.services.route.RouteSearch;
 import com.amap.api.services.route.WalkRouteResult;
+import com.example.sosocar.MyUtils.HttpUtil;
 import com.example.sosocar.driveroute.DrivingRouteOverlay;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -62,13 +54,12 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 
@@ -593,30 +584,26 @@ public class MainActivity extends AppCompatActivity  {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                OkHttpClient okHttpClient=new OkHttpClient();
+                OkHttpClient okHttpClient=HttpUtil.client; //采用单例模式，因为这个OkhttpClient不需要每次都实例化
 //                        .Builder()
 //                        .connectTimeout(10000, TimeUnit.MILLISECONDS)
 //                        .build();
-
-                //建立表单
-                FormBody formBody =new FormBody
+                JSONObject jsonObject=new JSONObject();
+                           jsonObject.put("telephone",tv_user_phone_number.getText().toString().trim());
+                           jsonObject.put("city",city);
+                           jsonObject.put("origin_address",origin_address);
+                           jsonObject.put("origin_longitude",origin_longitude);
+                           jsonObject.put("origin_latitude",origin_latitude);
+                           jsonObject.put("destination_address",destination_address);
+                           jsonObject.put("destination_longitude",destination_longitude);
+                           jsonObject.put("destination_address",destination_address);
+                           jsonObject.put("destination_latitude",destination_latitude);
+                           jsonObject.put("createTime",createTime);
+                           jsonObject.put("appointment",appointment);
+                RequestBody requestBody=RequestBody.create(HttpUtil.Json,jsonObject.toJSONString());
+                         Request  request=new Request
                         .Builder()
-                        .add("telephone",tv_user_phone_number.getText().toString().trim())
-                        .add("city",city)
-                        .add("origin_address",origin_address)
-                        .add("origin_longitude",origin_longitude)
-                        .add("origin_latitude",origin_latitude)
-                        .add("destination_address",destination_address)
-                        .add("destination_longitude",destination_longitude)
-                        .add("destination_address",destination_address)
-                        .add("destination_latitude",destination_latitude)
-                        .add("createTime",createTime)
-                        .add("appointment",appointment)
-                        .add("order_type",order_type)
-                        .build();
-                Request request=new Request
-                        .Builder()
-                        .post(formBody)
+                        .post(requestBody)
                         .url(createOrderUrl)
                         .build();
 

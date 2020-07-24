@@ -125,14 +125,14 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="272dp"
             android:layout_marginTop="18dp"
-            android:text="费用明细"
+            android:text="选择优惠卷"
             android:textColor="@color/font_hint"
             android:textSize="14dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
-            android:id="@+id/fee_detail"
+            android:id="@+id/select_token"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="340dp"
