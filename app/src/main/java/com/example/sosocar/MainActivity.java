@@ -4,6 +4,8 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -65,8 +67,9 @@ import okhttp3.ResponseBody;
 
 public class MainActivity extends AppCompatActivity  {
 
-    String createOrderUrl="http://3a27001y01.zicp.vip/order/create";
-    String createOrderUrl1="http://3r2x705117.zicp.vip/order/create";
+    String createOrderUrl="http://3a27001y01.zicp.vip//order/create";
+    String matchOrderUrl="http://3a27001y01.zicp.vip//order/match";
+    String driverPositionUrl="http://3a27001y01.zicp.vip//driver/driverPosition";
     //布局控件
     private DrawerLayout mDrawerLayout;
     private LinearLayout mTrip,mAccount,mInfo, ll_select_start_location, ll_select_end_location,mReserveTime;
@@ -106,16 +109,17 @@ public class MainActivity extends AppCompatActivity  {
     boolean flag=true;
     MyApplication myApp;
 
-    private  double origin_longitude;
-    private  double origin_latitude;
+    private  String origin_longitude;
+    private  String origin_latitude;
     private String city;
     private String origin_address;
     private String destination_address;
-    private double destination_longitude;
-    private double destination_latitude;
+    private String destination_longitude;
+    private String destination_latitude;
     private String createTime;
     private String appointment;
-    private int order_type;
+    private String order_type;
+    private String id="20200722110350";
 
 
 
@@ -146,6 +150,7 @@ public class MainActivity extends AppCompatActivity  {
         requestPermissions();
         //开始定位
         initLoc();
+        getDriverPosition();
         doPOISearch();
     }
 
@@ -231,8 +236,9 @@ public class MainActivity extends AppCompatActivity  {
 
                         origin_address=aMapLocation.getAddress();
                         city=aMapLocation.getCity();
-                        origin_latitude=aMapLocation.getLatitude();
-                        origin_longitude=aMapLocation.getLongitude();
+                        origin_latitude=Double.toString(aMapLocation.getLatitude());
+                        origin_longitude=Double.toString(aMapLocation.getLongitude());
+
 
                         if(isAddSelfMarker==false) {
                             aMapLocation.setLatitude(39.9042);//北京的经度
@@ -496,8 +502,8 @@ public class MainActivity extends AppCompatActivity  {
         // endPoint.setLatitude(latitude);
         double longitude = Double.valueOf(bundle.getString("longitude"));
         //endPoint.setLatitude(longitude);
-        origin_longitude=longitude;
-        origin_latitude=latitude;
+        origin_longitude=Double.toString(longitude);
+        origin_latitude=Double.toString(latitude);
         origin_address=bundle.getString("addressDetail");
         city=bundle.getString("city");
         startPoint = new LatLonPoint(latitude, longitude);
@@ -517,8 +523,8 @@ public class MainActivity extends AppCompatActivity  {
         // endPoint.setLatitude(latitude);
         double longitude = Double.valueOf(bundle.getString("longitude"));
         //endPoint.setLatitude(longitude);
-        destination_longitude=longitude;
-        destination_latitude=latitude;
+        destination_longitude=Double.toString(longitude);
+        destination_latitude=Double.toString(latitude);
         destination_address=bundle.getString("addressDetail");
         endPoint = new LatLonPoint(latitude, longitude);
         if(startPoint!=null) {
@@ -529,7 +535,6 @@ public class MainActivity extends AppCompatActivity  {
     }
 
     public  void showMatchingWindow() {
-        Log.d("Activity ","use showMatchingWindow");
         View view = LayoutInflater.from(this).inflate(R.layout.match_ing, null);
         matchingPopupWindow = new PopupWindow(this);
         matchingPopupWindow.setContentView(view);//设置PopupWindow布局文件
@@ -537,29 +542,57 @@ public class MainActivity extends AppCompatActivity  {
         matchingPopupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);//设置PopupWindow高
         rootView = LayoutInflater.from(this).inflate(R.layout.activity_main, null);//父布局
         matchingPopupWindow.showAtLocation(rootView, Gravity.BOTTOM, 0, 0);
-        matchingPopupWindow.setOutsideTouchable(true);
-        Log.d("Activity ","prepare to use matchDriver");
-        matchDriver();
+        matchingPopupWindow.setOutsideTouchable(false);
+        // 设置popWindow弹出窗体可点击
+        matchingPopupWindow.setFocusable(true);
+        // 实例化一个ColorDrawable颜色为半透明
+        ColorDrawable dw = new ColorDrawable(0xb0000000);
+        matchingPopupWindow.setBackgroundDrawable(dw);
+        matchingPopupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        // 设置popWindow的显示和消失动画
+        matchingPopupWindow.setAnimationStyle(R.style.mypopwindow_anim_style);
+        // 在底部显示
+        matchingPopupWindow.showAtLocation(rootView, Gravity.BOTTOM,0,0);
+
+        matchingPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                System.out.println("popWindow消失");
+                matchingPopupWindow.dismiss();
+            }
+        });
+
+        createOrder();
     }
 
 
     public void showEstimatedMoneyWindow(){
-        Log.d("Activity ","use showEstimatedMoneyWindow");
         View view= LayoutInflater.from(this).inflate(R.layout.call_for_car,null);
         estimatedMoneyPopupWindow=new PopupWindow(this);
         estimatedMoneyPopupWindow.setContentView(view);//设置PopupWindow布局文件
         estimatedMoneyPopupWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);//设置PopupWindow宽
         estimatedMoneyPopupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);//设置PopupWindow高
         rootView =LayoutInflater.from(this).inflate(R.layout.activity_main, null);//父布局
-        estimatedMoneyPopupWindow.showAtLocation(rootView, Gravity.BOTTOM,0,0);
+        estimatedMoneyPopupWindow.setFocusable(true);
         estimatedMoneyPopupWindow.setOutsideTouchable(false);//点击外部区域消失
+        ColorDrawable dw = new ColorDrawable(0xb0000000);
+        estimatedMoneyPopupWindow.setBackgroundDrawable(dw);
+        // 设置popWindow的显示和消失动画
+        estimatedMoneyPopupWindow.setAnimationStyle(R.style.mypopwindow_anim_style);
+        estimatedMoneyPopupWindow.showAtLocation(rootView, Gravity.BOTTOM,0,0);
         bt_hail_car=view.findViewById(R.id.bt_hail_car);
 
         bt_hail_car.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("Activity ","showEstimatedMoneyWindow onClick ");
                 showMatchingWindow();
+                estimatedMoneyPopupWindow.dismiss();
+            }
+        });
+        estimatedMoneyPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                System.out.println("popWindow消失");
                 estimatedMoneyPopupWindow.dismiss();
             }
         });
@@ -573,18 +606,31 @@ public class MainActivity extends AppCompatActivity  {
         matchSuccessPopupWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);//设置PopupWindow宽
         matchSuccessPopupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);//设置PopupWindow高
         rootView =LayoutInflater.from(this).inflate(R.layout.activity_main, null);//父布局
+        matchSuccessPopupWindow.setFocusable(true);
+        matchSuccessPopupWindow.setOutsideTouchable(false);//点击外部区域消失
+        ColorDrawable dw = new ColorDrawable(0xb0000000);
+        matchSuccessPopupWindow.setBackgroundDrawable(dw);
+        // 设置popWindow的显示和消失动画
+        matchSuccessPopupWindow.setAnimationStyle(R.style.mypopwindow_anim_style);
+        // 在底部显示
         matchSuccessPopupWindow.showAtLocation(rootView, Gravity.BOTTOM,0,0);
-        matchSuccessPopupWindow.setOutsideTouchable(true);//点击外部区域消失
+        matchSuccessPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                System.out.println("popWindow消失");
+                matchSuccessPopupWindow.dismiss();
+            }
+        });
 
     }
 
-    public void matchDriver(){
+    public void createOrder(){
         SimpleDateFormat sdf = new SimpleDateFormat();// 格式化时间
         sdf.applyPattern("yyyy-MM-dd HH:mm:ss");//
         Date date = new Date();// 获取当前时间
         createTime=sdf.format(date).toString();
         appointment=sdf.format(date).toString();
-        order_type=0;
+        order_type="0";
 
         Log.d("Activity ","use matchDriver");
         Log.d("Activity ",createTime);
@@ -629,17 +675,21 @@ public class MainActivity extends AppCompatActivity  {
                         if(code== HttpURLConnection.HTTP_OK || code==HttpURLConnection.HTTP_RESET){
                             ResponseBody body=response.body();
                             String responseBodyStr=body.string();//把内容转成字符串类型
-                            JsonObject responseBodyJsonObject=(JsonObject) new JsonParser().parse(responseBodyStr);
-                            String id=responseBodyJsonObject.get("id").getAsString();//获取id字段的值
-                            System.out.println(id);
-                            showToastInThread(MainActivity.this, "订单号为："+id);
-                            showMatchSuccessWindow();
-                            matchingPopupWindow.dismiss();
+                           // JsonParser jsonParser=new JsonParser();
+                            //JsonObject jsonObject=jsonParser.parse(responseBodyStr).getAsJsonObject();
+                            //JsonObject responseBodyJsonObject=(JsonObject) new JsonParser().parse(responseBodyStr);
+                           // String id=jsonObject.get("id").getAsString();//获取id字段的值
+                            System.out.println(responseBodyStr);
+                            Log.d("Activity ","订单号为:responseBodyStr-->"+responseBodyStr);
+                            showToastInThread(MainActivity.this, "订单号为："+responseBodyStr);
+                            //id=responseBodyStr;
+                            id="20200722110350";
                         }
                     }
                 });
             }
         }).start();
+        matchOrder();
 
     }
 
@@ -650,6 +700,89 @@ public class MainActivity extends AppCompatActivity  {
             @Override
             public void run() {
                 Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void matchOrder(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                OkHttpClient okHttpClient=HttpUtil.client; //采用单例模式，因为这个OkhttpClient不需要每次都实例化
+//                        .Builder()
+//                        .connectTimeout(10000, TimeUnit.MILLISECONDS)
+//                        .build();
+                JSONObject jsonObject=new JSONObject();
+                jsonObject.put("id","20200722110350");
+                jsonObject.put("telephone","123");
+                jsonObject.put("city",city);
+                jsonObject.put("origin_address",origin_address);
+                jsonObject.put("origin_longitude",origin_longitude);
+                jsonObject.put("origin_latitude",origin_latitude);
+                jsonObject.put("destination_address",destination_address);
+                jsonObject.put("destination_longitude",destination_longitude);
+                jsonObject.put("destination_latitude",destination_latitude);
+                jsonObject.put("createTime",createTime);
+                jsonObject.put("appointment",appointment);
+                jsonObject.put("order_type",order_type);
+                RequestBody requestBody=RequestBody.create(HttpUtil.Json,jsonObject.toJSONString());
+                Request  request=new Request
+                        .Builder()
+                        .post(requestBody)
+                        .url(matchOrderUrl)
+                        .build();
+
+                Call task=okHttpClient.newCall(request);
+                task.enqueue(new Callback() {
+                    @Override
+                    public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                        Log.d("Activity ","onFailure->"+e.toString());
+                    }
+
+                    @Override
+                    public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                        int code=response.code();
+                        Log.d("Activity ","code-->"+code);
+                        if(code== HttpURLConnection.HTTP_OK || code==HttpURLConnection.HTTP_RESET){
+                            final String body = response.body().string();
+                            Log.d("Activity ","responseBodyStr-->"+body);
+//                           JSONObject jsonObject=JSONObject.parseObject(body);
+//                           String content=jsonObject.getString("id");
+                            Log.d("Activity ","responseBodyStr-->"+body);
+                           // System.out.println(content);
+                            //Log.d("Activity ","content-->"+content);
+                            showToastInThread(MainActivity.this, "内容为："+body);
+
+
+                        }
+                    }
+                });
+            }
+        }).start();
+        showMatchSuccessWindow();
+        matchingPopupWindow.dismiss();
+    }
+
+
+
+    public void getDriverPosition(){
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url(driverPositionUrl)
+                .build();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.d("Activity ","onFailure->"+e.toString());
+            }
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Log.d("Activity ","code-->"+response.code());
+                if(response.isSuccessful()){//回调的方法执行在子线程。
+                    Log.d("Activity","获取数据成功了");
+                    Log.d("Activity","response.code()=="+response.code());
+                    Log.d("Activity","response.body().string()=="+response.body().string());
+                }
             }
         });
     }
