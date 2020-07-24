@@ -64,6 +64,9 @@ import okhttp3.Response;
 import okhttp3.ResponseBody;
 
 public class MainActivity extends AppCompatActivity  {
+
+    String createOrderUrl="http://3a27001y01.zicp.vip/order/create";
+    String createOrderUrl1="http://3r2x705117.zicp.vip/order/create";
     //布局控件
     private DrawerLayout mDrawerLayout;
     private LinearLayout mTrip,mAccount,mInfo, ll_select_start_location, ll_select_end_location,mReserveTime;
@@ -103,19 +106,16 @@ public class MainActivity extends AppCompatActivity  {
     boolean flag=true;
     MyApplication myApp;
 
-    private  String origin_longitude;
-    private  String origin_latitude;
+    private  double origin_longitude;
+    private  double origin_latitude;
     private String city;
     private String origin_address;
     private String destination_address;
-    private String destination_longitude;
-    private String destination_latitude;
+    private double destination_longitude;
+    private double destination_latitude;
     private String createTime;
     private String appointment;
-    private String order_type;
-
-    String createOrderUrl="http://3a27001y01.zicp.vip/order/create";
-
+    private int order_type;
 
 
 
@@ -231,8 +231,8 @@ public class MainActivity extends AppCompatActivity  {
 
                         origin_address=aMapLocation.getAddress();
                         city=aMapLocation.getCity();
-                        origin_latitude=Double.toString(aMapLocation.getLatitude());
-                        origin_longitude=Double.toString(aMapLocation.getLongitude());
+                        origin_latitude=aMapLocation.getLatitude();
+                        origin_longitude=aMapLocation.getLongitude();
 
                         if(isAddSelfMarker==false) {
                             aMapLocation.setLatitude(39.9042);//北京的经度
@@ -496,8 +496,8 @@ public class MainActivity extends AppCompatActivity  {
         // endPoint.setLatitude(latitude);
         double longitude = Double.valueOf(bundle.getString("longitude"));
         //endPoint.setLatitude(longitude);
-        origin_longitude=bundle.getString("longitude");
-        origin_latitude=bundle.getString("latitude");
+        origin_longitude=longitude;
+        origin_latitude=latitude;
         origin_address=bundle.getString("addressDetail");
         city=bundle.getString("city");
         startPoint = new LatLonPoint(latitude, longitude);
@@ -517,8 +517,8 @@ public class MainActivity extends AppCompatActivity  {
         // endPoint.setLatitude(latitude);
         double longitude = Double.valueOf(bundle.getString("longitude"));
         //endPoint.setLatitude(longitude);
-        destination_longitude=bundle.getString("longitude");
-        destination_latitude=bundle.getString("latitude");
+        destination_longitude=longitude;
+        destination_latitude=latitude;
         destination_address=bundle.getString("addressDetail");
         endPoint = new LatLonPoint(latitude, longitude);
         if(startPoint!=null) {
@@ -529,6 +529,7 @@ public class MainActivity extends AppCompatActivity  {
     }
 
     public  void showMatchingWindow() {
+        Log.d("Activity ","use showMatchingWindow");
         View view = LayoutInflater.from(this).inflate(R.layout.match_ing, null);
         matchingPopupWindow = new PopupWindow(this);
         matchingPopupWindow.setContentView(view);//设置PopupWindow布局文件
@@ -537,11 +538,13 @@ public class MainActivity extends AppCompatActivity  {
         rootView = LayoutInflater.from(this).inflate(R.layout.activity_main, null);//父布局
         matchingPopupWindow.showAtLocation(rootView, Gravity.BOTTOM, 0, 0);
         matchingPopupWindow.setOutsideTouchable(true);
+        Log.d("Activity ","prepare to use matchDriver");
         matchDriver();
     }
 
 
     public void showEstimatedMoneyWindow(){
+        Log.d("Activity ","use showEstimatedMoneyWindow");
         View view= LayoutInflater.from(this).inflate(R.layout.call_for_car,null);
         estimatedMoneyPopupWindow=new PopupWindow(this);
         estimatedMoneyPopupWindow.setContentView(view);//设置PopupWindow布局文件
@@ -555,6 +558,7 @@ public class MainActivity extends AppCompatActivity  {
         bt_hail_car.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d("Activity ","showEstimatedMoneyWindow onClick ");
                 showMatchingWindow();
                 estimatedMoneyPopupWindow.dismiss();
             }
@@ -562,6 +566,7 @@ public class MainActivity extends AppCompatActivity  {
     }
 
     public void showMatchSuccessWindow(){
+        Log.d("Activity ","use showMatchSuccessWindow");
         View view= LayoutInflater.from(this).inflate(R.layout.match_success,null);
         matchSuccessPopupWindow=new PopupWindow(this);
         matchSuccessPopupWindow.setContentView(view);//设置PopupWindow布局文件
@@ -577,10 +582,12 @@ public class MainActivity extends AppCompatActivity  {
         SimpleDateFormat sdf = new SimpleDateFormat();// 格式化时间
         sdf.applyPattern("yyyy-MM-dd HH:mm:ss");//
         Date date = new Date();// 获取当前时间
-         createTime=date.toString();
-         appointment=date.toString();
+        createTime=sdf.format(date).toString();
+        appointment=sdf.format(date).toString();
+        order_type=0;
 
-        order_type="1";
+        Log.d("Activity ","use matchDriver");
+        Log.d("Activity ",createTime);
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -589,18 +596,20 @@ public class MainActivity extends AppCompatActivity  {
 //                        .connectTimeout(10000, TimeUnit.MILLISECONDS)
 //                        .build();
                 JSONObject jsonObject=new JSONObject();
-                           jsonObject.put("telephone",tv_user_phone_number.getText().toString().trim());
-                           jsonObject.put("city",city);
-                           jsonObject.put("origin_address",origin_address);
-                           jsonObject.put("origin_longitude",origin_longitude);
-                           jsonObject.put("origin_latitude",origin_latitude);
-                           jsonObject.put("destination_address",destination_address);
-                           jsonObject.put("destination_longitude",destination_longitude);
-                           jsonObject.put("destination_latitude",destination_latitude);
-                           jsonObject.put("createTime",createTime);
-                           jsonObject.put("appointment",appointment);
+                Log.d("Activity ","use matchDriver2");
+                jsonObject.put("telephone",tv_user_phone_number.getText().toString().trim());
+                jsonObject.put("city",city);
+                jsonObject.put("origin_address",origin_address);
+                jsonObject.put("origin_longitude",origin_longitude);
+                jsonObject.put("origin_latitude",origin_latitude);
+                jsonObject.put("destination_address",destination_address);
+                jsonObject.put("destination_longitude",destination_longitude);
+                jsonObject.put("destination_latitude",destination_latitude);
+                jsonObject.put("createTime",createTime);
+                jsonObject.put("appointment",appointment);
+                jsonObject.put("order_type",order_type);
                 RequestBody requestBody=RequestBody.create(HttpUtil.Json,jsonObject.toJSONString());
-                         Request  request=new Request
+                Request  request=new Request
                         .Builder()
                         .post(requestBody)
                         .url(createOrderUrl)
@@ -616,8 +625,8 @@ public class MainActivity extends AppCompatActivity  {
                     @Override
                     public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                         int code=response.code();
-                        Log.d("Testing ","code-->"+code);
-                        if(code== HttpURLConnection.HTTP_OK){
+                        Log.d("Activity ","code-->"+code);
+                        if(code== HttpURLConnection.HTTP_OK || code==HttpURLConnection.HTTP_RESET){
                             ResponseBody body=response.body();
                             String responseBodyStr=body.string();//把内容转成字符串类型
                             JsonObject responseBodyJsonObject=(JsonObject) new JsonParser().parse(responseBodyStr);

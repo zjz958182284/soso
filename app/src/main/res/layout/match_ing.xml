@@ -65,12 +65,11 @@
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="112dp"
-            android:layout_marginTop="48dp"
+            app:layout_constraintBaseline_toBaselineOf="@id/tv_waiting_time"
+            app:layout_constraintRight_toLeftOf="@id/tv_waiting_time"
             android:text="约等"
             android:textColor="@color/font_hint"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+             />
 
         <TextView
             android:padding="5dp"
