@@ -1,17 +1,28 @@
 package com.example.sosocar;
 
 import android.Manifest;
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -42,8 +53,24 @@ import com.amap.api.services.route.RideRouteResult;
 import com.amap.api.services.route.RouteSearch;
 import com.amap.api.services.route.WalkRouteResult;
 import com.example.sosocar.driveroute.DrivingRouteOverlay;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 public class MainActivity extends AppCompatActivity  {
     //布局控件
@@ -53,8 +80,14 @@ public class MainActivity extends AppCompatActivity  {
     private RadioGroup mSelectType;
     private TextView tv_start_location;
     private TextView tv_end_location;
-    private Button bt_taxi_hailing;
+    private PopupWindow matchingPopupWindow;
+    private PopupWindow estimatedMoneyPopupWindow;
+    private PopupWindow matchSuccessPopupWindow;
     private TextView tv_user_phone_number;
+    private View rootView;
+    private Button bt_hail_car;
+    private TextView tv_waiting_time;
+
     private int currentOrderType=R.id.now_go;
     private static final int WRITE_COARSE_LOCATION_REQUEST_CODE = 255;//这号码没有什么意义
     private final String TAG = this.getClass().getName();
@@ -73,14 +106,28 @@ public class MainActivity extends AppCompatActivity  {
     private LatLonPoint endPoint=null;//结束的点
     private Marker selfMarker=null;
     boolean isAddSelfMarker=false;
-    private String currentCity;//当前所在城市
-
-
+    private String currentCity="北京";//当前所在城市
     //请求Activity回转参数
     private final int REQUEST_END=0;
-
     boolean flag=true;
     MyApplication myApp;
+
+    private  String origin_longitude;
+    private  String origin_latitude;
+    private String city;
+    private String origin_address;
+    private String destination_address;
+    private String destination_longitude;
+    private String destination_latitude;
+    private String createTime;
+    private String appointment;
+    private String order_type;
+
+    String createOrderUrl="http://3a27001y01.zicp.vip/order/create";
+
+
+
+
     @Override
    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -124,7 +171,7 @@ public class MainActivity extends AppCompatActivity  {
         mTrip=findViewById(R.id.mytrip);
         tv_end_location=findViewById(R.id.tv_end_location);
         tv_start_location=findViewById(R.id.tv_start_location);
-        bt_taxi_hailing=findViewById(R.id.bt_taxi_hailing);
+
         tv_user_phone_number=findViewById(R.id.tv_user_phone_number);
 
 
@@ -155,12 +202,7 @@ public class MainActivity extends AppCompatActivity  {
         });
 
 
-        bt_taxi_hailing.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-            }
-        });
     }
 
     //定位
@@ -195,6 +237,11 @@ public class MainActivity extends AppCompatActivity  {
                         Log.e("Amap","city="+aMapLocation.getCity());
                         Log.e("Amap","longtitude="+aMapLocation.getLongitude());
                         Log.e("Amap","latitude="+aMapLocation.getLatitude());
+
+                        origin_address=aMapLocation.getAddress();
+                        city=aMapLocation.getCity();
+                        origin_latitude=Double.toString(aMapLocation.getLatitude());
+                        origin_longitude=Double.toString(aMapLocation.getLongitude());
 
                         if(isAddSelfMarker==false) {
                             aMapLocation.setLatitude(39.9042);//北京的经度
@@ -441,15 +488,15 @@ public class MainActivity extends AppCompatActivity  {
 
 
         }
-     if (resultCode==1) {
-         if (flag) {
-             Bundle bundle = data.getExtras();
-             setStartPoint(bundle);
-         } else {
-             Bundle bundle = data.getExtras();
-             setEndPoint(bundle);
-         }
-     }
+        if (resultCode==1) {
+            if (flag) {
+                Bundle bundle = data.getExtras();
+                setStartPoint(bundle);
+            } else {
+                Bundle bundle = data.getExtras();
+                setEndPoint(bundle);
+            }
+        }
     }
 
     public void setStartPoint(Bundle bundle){
@@ -458,6 +505,10 @@ public class MainActivity extends AppCompatActivity  {
         // endPoint.setLatitude(latitude);
         double longitude = Double.valueOf(bundle.getString("longitude"));
         //endPoint.setLatitude(longitude);
+        origin_longitude=bundle.getString("longitude");
+        origin_latitude=bundle.getString("latitude");
+        origin_address=bundle.getString("addressDetail");
+        city=bundle.getString("city");
         startPoint = new LatLonPoint(latitude, longitude);
         moveMap(latitude,longitude);
         addMarkerToMap(latitude,longitude);
@@ -470,16 +521,142 @@ public class MainActivity extends AppCompatActivity  {
 
 
     public void setEndPoint(Bundle bundle){
-            tv_end_location.setText(bundle.getString("addressDetail"));
-            double latitude = Double.valueOf(bundle.getString("latitude"));
-            // endPoint.setLatitude(latitude);
-            double longitude = Double.valueOf(bundle.getString("longitude"));
-            //endPoint.setLatitude(longitude);
-            endPoint = new LatLonPoint(latitude, longitude);
-              if(startPoint!=null) {
+        tv_end_location.setText(bundle.getString("addressDetail"));
+        double latitude = Double.valueOf(bundle.getString("latitude"));
+        // endPoint.setLatitude(latitude);
+        double longitude = Double.valueOf(bundle.getString("longitude"));
+        //endPoint.setLatitude(longitude);
+        destination_longitude=bundle.getString("longitude");
+        destination_latitude=bundle.getString("latitude");
+        destination_address=bundle.getString("addressDetail");
+        endPoint = new LatLonPoint(latitude, longitude);
+        if(startPoint!=null) {
             //画出规划路径
             drawRouteLine();
+            showEstimatedMoneyWindow();
         }
+    }
+
+    public  void showMatchingWindow() {
+        View view = LayoutInflater.from(this).inflate(R.layout.match_ing, null);
+        matchingPopupWindow = new PopupWindow(this);
+        matchingPopupWindow.setContentView(view);//设置PopupWindow布局文件
+        matchingPopupWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);//设置PopupWindow宽
+        matchingPopupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);//设置PopupWindow高
+        rootView = LayoutInflater.from(this).inflate(R.layout.activity_main, null);//父布局
+        matchingPopupWindow.showAtLocation(rootView, Gravity.BOTTOM, 0, 0);
+        matchingPopupWindow.setOutsideTouchable(true);
+        matchDriver();
+    }
+
+
+    public void showEstimatedMoneyWindow(){
+        View view= LayoutInflater.from(this).inflate(R.layout.call_for_car,null);
+        estimatedMoneyPopupWindow=new PopupWindow(this);
+        estimatedMoneyPopupWindow.setContentView(view);//设置PopupWindow布局文件
+        estimatedMoneyPopupWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);//设置PopupWindow宽
+        estimatedMoneyPopupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);//设置PopupWindow高
+        rootView =LayoutInflater.from(this).inflate(R.layout.activity_main, null);//父布局
+        estimatedMoneyPopupWindow.showAtLocation(rootView, Gravity.BOTTOM,0,0);
+        estimatedMoneyPopupWindow.setOutsideTouchable(false);//点击外部区域消失
+        bt_hail_car=view.findViewById(R.id.bt_hail_car);
+
+        bt_hail_car.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showMatchingWindow();
+                estimatedMoneyPopupWindow.dismiss();
+            }
+        });
+    }
+
+    public void showMatchSuccessWindow(){
+        View view= LayoutInflater.from(this).inflate(R.layout.match_success,null);
+        matchSuccessPopupWindow=new PopupWindow(this);
+        matchSuccessPopupWindow.setContentView(view);//设置PopupWindow布局文件
+        matchSuccessPopupWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);//设置PopupWindow宽
+        matchSuccessPopupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);//设置PopupWindow高
+        rootView =LayoutInflater.from(this).inflate(R.layout.activity_main, null);//父布局
+        matchSuccessPopupWindow.showAtLocation(rootView, Gravity.BOTTOM,0,0);
+        matchSuccessPopupWindow.setOutsideTouchable(true);//点击外部区域消失
+
+    }
+
+    public void matchDriver(){
+        SimpleDateFormat sdf = new SimpleDateFormat();// 格式化时间
+        sdf.applyPattern("yyyy-MM-dd HH:mm:ss");//
+        Date date = new Date();// 获取当前时间
+         createTime=date.toString();
+         appointment=date.toString();
+
+        order_type="1";
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                OkHttpClient okHttpClient=new OkHttpClient();
+//                        .Builder()
+//                        .connectTimeout(10000, TimeUnit.MILLISECONDS)
+//                        .build();
+
+                //建立表单
+                FormBody formBody =new FormBody
+                        .Builder()
+                        .add("telephone",tv_user_phone_number.getText().toString().trim())
+                        .add("city",city)
+                        .add("origin_address",origin_address)
+                        .add("origin_longitude",origin_longitude)
+                        .add("origin_latitude",origin_latitude)
+                        .add("destination_address",destination_address)
+                        .add("destination_longitude",destination_longitude)
+                        .add("destination_address",destination_address)
+                        .add("destination_latitude",destination_latitude)
+                        .add("createTime",createTime)
+                        .add("appointment",appointment)
+                        .add("order_type",order_type)
+                        .build();
+                Request request=new Request
+                        .Builder()
+                        .post(formBody)
+                        .url(createOrderUrl)
+                        .build();
+
+                Call task=okHttpClient.newCall(request);
+                task.enqueue(new Callback() {
+                    @Override
+                    public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                        Log.d("Activity ","onFailure->"+e.toString());
+                    }
+
+                    @Override
+                    public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                        int code=response.code();
+                        Log.d("Testing ","code-->"+code);
+                        if(code== HttpURLConnection.HTTP_OK){
+                            ResponseBody body=response.body();
+                            String responseBodyStr=body.string();//把内容转成字符串类型
+                            JsonObject responseBodyJsonObject=(JsonObject) new JsonParser().parse(responseBodyStr);
+                            String id=responseBodyJsonObject.get("id").getAsString();//获取id字段的值
+                            System.out.println(id);
+                            showToastInThread(MainActivity.this, "订单号为："+id);
+                            showMatchSuccessWindow();
+                            matchingPopupWindow.dismiss();
+                        }
+                    }
+                });
+            }
+        }).start();
+
+    }
+
+
+    // 实现在子线程中显示Toast
+    private void showToastInThread(final Context context, final String msg) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 }

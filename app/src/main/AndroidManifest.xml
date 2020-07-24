@@ -41,7 +41,7 @@
         <!-- C:/Users\user/.android/debug.keystore 林锋吉的key地址-->
         <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="3a227e3f7090211183beebb9c81ae8f4" /> <!-- 定位需要的服务 适配Android Q需要加上android:foregroundServiceType="location" -->
+            android:value="08e93c5d2dc64d4904c6dc18fd316c0d" /> <!-- 定位需要的服务 适配Android Q需要加上android:foregroundServiceType="location" -->
         <service
             android:name="com.amap.api.location.APSService"
             android:foregroundServiceType="location" />

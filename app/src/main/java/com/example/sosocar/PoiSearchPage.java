@@ -188,6 +188,7 @@ public class PoiSearchPage extends AppCompatActivity implements PoiSearch.OnPoiS
         bundle.putString("addressDetail",poiAddressBean.getDetailAddress());
         bundle.putString("latitude",poiAddressBean.getLatitude());
         bundle.putString("longitude",poiAddressBean.getLongitude());
+        bundle.putString("city",poiAddressBean.getCity());
         intent.putExtras(bundle);
 
         setResult(1,intent);
