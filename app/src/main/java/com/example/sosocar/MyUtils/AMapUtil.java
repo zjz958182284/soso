@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.example.sosocar.driveroute.util;
+package com.example.sosocar.MyUtils;
 
 import android.text.Html;
 import android.text.Spanned;

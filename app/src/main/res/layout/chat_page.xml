@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_marginBottom="6dp"
+        android:id="@+id/line1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        >
+
+
+
+        <EditText
+            android:id="@+id/chat_editText"
+            android:layout_width="225dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/search_box"
+            android:padding="10dp"
+            android:layout_weight="1"
+            android:scrollbarAlwaysDrawVerticalTrack="true"
+            android:ems="10"
+            android:inputType="textMultiLine"
+            android:hint="请输入消息...."
+            android:textColorHint="@color/font_hint"
+            android:textColor="@color/black" />
+
+        <Button
+            android:id="@+id/send_button"
+            android:layout_width="wrap_content"
+            android:layout_height="44dp"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="8dp"
+            android:layout_weight="1"
+            android:textSize="18dp"
+           android:background="@drawable/button_border_gray"
+            android:text="发送"/>
+    </LinearLayout>
+
+
+
+    <ListView
+        android:id="@+id/chat_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/line1"
+        android:divider="@color/colorAccent"
+        android:layout_below="@id/line2"
+        android:layout_marginBottom="15dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:padding="11dp"
+        android:id="@+id/line2"
+        android:background="@drawable/blue_gradient"
+        android:layout_height="wrap_content">
+
+        <com.example.sosocar.View.CircleImageView
+            android:id="@+id/head_photo"
+            android:layout_width="wrap_content"
+            android:layout_height="61dp"
+            android:layout_weight="1"
+            android:elevation="2dp"
+            android:src="@mipmap/head_photo"
+            app:border_color="#FFFAFA"
+            app:border_width="1dp"
+            />
+
+        <TextView
+            android:id="@+id/driver_name"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textSize="20dp"
+            android:gravity="center_vertical"
+            android:paddingLeft="105dp"
+            android:textColor="#ffffff"
+            android:text="杨师傅" />
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>

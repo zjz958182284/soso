@@ -3,10 +3,8 @@ package com.example.sosocar.driveroute;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -25,9 +23,10 @@ import com.amap.api.services.route.DriveRouteResult;
 import com.amap.api.services.route.RideRouteResult;
 import com.amap.api.services.route.RouteSearch;
 import com.amap.api.services.route.WalkRouteResult;
+import com.example.sosocar.MyUtils.AMapUtil;
+import com.example.sosocar.MyUtils.ToastUtil;
 import com.example.sosocar.R;
-import com.example.sosocar.driveroute.util.AMapUtil;
-import com.example.sosocar.driveroute.util.ToastUtil;
+
 
 
 public class Main4Activity extends AppCompatActivity implements AMap.OnMapClickListener,

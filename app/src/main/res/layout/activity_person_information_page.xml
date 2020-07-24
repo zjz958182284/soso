@@ -46,7 +46,7 @@
             android:id="@+id/h_back"
             android:layout_width="match_parent"
             android:layout_height="180dp"
-            android:background="@mipmap/person_background"/>
+            />
 
         <com.example.sosocar.View.CircleImageView
             android:id="@+id/h_head"
@@ -62,15 +62,6 @@
             android:layout_alignBottom="@id/h_back"
             android:layout_marginBottom="20dp"
             android:orientation="horizontal">
-
-            <ImageView
-                android:id="@+id/user_line"
-                android:layout_width="1dp"
-                android:layout_height="25dp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginLeft="15dp"
-                android:background="@android:color/white" />
-
 
         </RelativeLayout>
 

@@ -8,7 +8,8 @@ android {
         //调试版的keystore
         debug {
 
-            storeFile file('C:\\Users\\user\\.android\\debug.keystore')
+
+            storeFile file('D:/Android_sdk/.android/debug.keystore')
             storePassword "android"
             keyAlias "androiddebugkey"
             keyPassword "android"
@@ -95,5 +96,5 @@ dependencies {
     implementation 'com.amap.api:tripmodule:1.0.1'
     implementation 'com.amap.api:poisearchmodule:1.1.1'
     implementation 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+'
-
+    implementation 'com.alibaba:fastjson:1.1.54.android'
 }

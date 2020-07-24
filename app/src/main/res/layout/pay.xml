@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="@color/white"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:padding="15dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <ImageButton
+            android:id="@+id/close"
+            android:layout_width="30dp"
+            android:layout_marginLeft="15dp"
+            android:layout_height="30dp"
+            android:src="@drawable/close"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="待支付金额"
+            android:layout_marginLeft="95dp"
+            android:textSize="20dp"/>
+        
+        
+    </LinearLayout>
+    
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/pressed"/>
+
+    <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_margin="20dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="合计费用"
+        android:textSize="20dp"
+        android:textColor="#FF101010"/>
+
+    <TextView
+        android:id="@+id/total_fee"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="18.00元"
+        android:textSize="20dp"
+        android:gravity="end"
+        android:textColor="#FF101010"/>
+
+
+</LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="优惠卷"
+            android:textSize="20dp"
+            android:textColor="@color/font_orange"/>
+
+        <TextView
+            android:id="@+id/discount_fee"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="-18.00元"
+            android:textSize="20dp"
+            android:gravity="end"
+            android:textColor="@color/font_orange"/>
+
+
+    </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="20dp"
+
+        android:background="@color/pressed"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:padding="10dp"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/fee"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="24dp"
+            android:layout_marginTop="4dp"
+            android:text="8.00"
+            android:textColor="#FFFF5810"
+            android:textSize="30dp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:text="元"
+            android:textColor="@color/font_hint"
+            android:textSize="16dp"
+            app:layout_constraintLeft_toRightOf="@id/fee"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="272dp"
+            android:layout_marginTop="18dp"
+            android:text="费用明细"
+            android:textColor="@color/font_hint"
+            android:textSize="14dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/fee_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="340dp"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/cursor_right"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:id="@+id/pay_type">
+
+        <RadioButton
+            android:id="@+id/wechat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:buttonTint="#FF1778FB"
+            android:layoutDirection="rtl"
+            android:drawableLeft="@drawable/wechat"
+            android:text="微信支付"
+            android:textSize="20dp"/>
+
+        <RadioButton
+            android:id="@+id/alipay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:buttonTint="#FF1778FB"
+            android:layoutDirection="rtl"
+            android:text="支付宝支付"
+            android:drawableLeft="@drawable/alipay"
+            android:textSize="20dp"/>
+        
+
+
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/confirm_pay"
+        android:layout_width="330dp"
+        android:layout_height="50dp"
+        android:background="@drawable/cancel_reason_button"
+        android:text="确认支付8.00元"
+        android:textColor="@color/white"
+        android:layout_gravity="center_horizontal"
+        android:textSize="22dp"/>
+
+
+</LinearLayout>

@@ -1,12 +1,10 @@
 /**
  * 
  */
-package com.example.sosocar.driveroute.util;
+package com.example.sosocar.MyUtils;
 
 import android.content.Context;
 import android.widget.Toast;
-
-import com.amap.api.services.core.AMapException;
 
 public class ToastUtil {
 

@@ -1,14 +1,8 @@
 package com.example.sosocar;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -18,7 +12,11 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
@@ -76,6 +74,11 @@ public class MainActivity extends AppCompatActivity  {
     private Marker selfMarker=null;
     boolean isAddSelfMarker=false;
     private String currentCity;//当前所在城市
+
+
+    //请求Activity回转参数
+    private final int REQUEST_END=0;
+
     boolean flag=true;
     MyApplication myApp;
     @Override
@@ -434,6 +437,10 @@ public class MainActivity extends AppCompatActivity  {
     @Override
     protected void onActivityResult(int requestCode,int resultCode,Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==REQUEST_END&&resultCode==RESULT_OK){
+
+
+        }
      if (resultCode==1) {
          if (flag) {
              Bundle bundle = data.getExtras();

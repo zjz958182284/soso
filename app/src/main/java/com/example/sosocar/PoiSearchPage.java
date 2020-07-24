@@ -12,6 +12,10 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.amap.api.services.core.AMapException;
 import com.amap.api.services.core.LatLonPoint;
 import com.amap.api.services.core.PoiItem;
@@ -19,10 +23,11 @@ import com.amap.api.services.core.SuggestionCity;
 import com.amap.api.services.poisearch.PoiResult;
 import com.amap.api.services.poisearch.PoiSearch;
 import com.example.sosocar.Entity.PoiAddressBean;
-import com.example.sosocar.driveroute.util.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.example.sosocar.MyUtils.ToastUtil;
 
 public class PoiSearchPage extends AppCompatActivity implements PoiSearch.OnPoiSearchListener {
 
