@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
@@ -54,11 +55,12 @@ public class MainActivity extends AppCompatActivity  {
     private RadioGroup mSelectType;
     private TextView tv_start_location;
     private TextView tv_end_location;
+    private Button bt_taxi_hailing;
+    private TextView tv_user_phone_number;
     private int currentOrderType=R.id.now_go;
     private static final int WRITE_COARSE_LOCATION_REQUEST_CODE = 255;//这号码没有什么意义
     private final String TAG = this.getClass().getName();
-    private String address;//地址
-    private LatLonPoint latLonPoint;//经纬度
+
     //显示地图需要的变量
     private MapView mMapView;//地图控件
     private AMap aMap;//地图对象
@@ -74,13 +76,18 @@ public class MainActivity extends AppCompatActivity  {
     private Marker selfMarker=null;
     boolean isAddSelfMarker=false;
     private String currentCity;//当前所在城市
-
+    boolean flag=true;
+    MyApplication myApp;
     @Override
    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         //初始化控件
         initWidget();
+        //初始全局变量
+        myApp = (MyApplication) getApplication();
+        tv_user_phone_number.setText(myApp.getTelephone());
         //获取地图控件引用/
         mMapView = findViewById(R.id.map);
         //在activity执行onCreate时执行mMapView.onCreate(savedInstanceState)，创建地图，此方法须覆写，虚拟机需要在很多情况下保存地图绘制的当前状态。/
@@ -114,6 +121,9 @@ public class MainActivity extends AppCompatActivity  {
         mTrip=findViewById(R.id.mytrip);
         tv_end_location=findViewById(R.id.tv_end_location);
         tv_start_location=findViewById(R.id.tv_start_location);
+        bt_taxi_hailing=findViewById(R.id.bt_taxi_hailing);
+        tv_user_phone_number=findViewById(R.id.tv_user_phone_number);
+
 
         my.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -138,6 +148,14 @@ public class MainActivity extends AppCompatActivity  {
             public void onClick(View v) {
                     Intent intent = new Intent(MainActivity.this, MyInfo.class);
                     startActivity(intent);
+            }
+        });
+
+
+        bt_taxi_hailing.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
             }
         });
     }
@@ -330,66 +348,79 @@ public class MainActivity extends AppCompatActivity  {
 
     //POI搜索
     protected void doPOISearch(){
-        ll_select_end_location.setOnClickListener(new View.OnClickListener() {
+
+        ll_select_start_location.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Intent poiSearchIntent =new Intent(MainActivity.this,PoiSearchPage.class);
-                startActivity(poiSearchIntent);
-
-                //开始搜索POI兴趣点
-                Log.e("Amap","click");
-                //拿到用户搜索地址关键词
-                String startLocation=tv_start_location.getText().toString();
-                //开始搜索POI
-                //创建一个搜索条件对象query
-                PoiSearch.Query query=new PoiSearch.Query("北京","",currentCity);
-                //创建一个POISearch和query关联
-                PoiSearch poiSearch=new PoiSearch(getApplicationContext(),query);
-                //给search绑定一个回调函数
-                poiSearch.setOnPoiSearchListener(new PoiSearch.OnPoiSearchListener() {
-                    @Override
-                    public void onPoiSearched(PoiResult poiResult, int i) {
-                        //处理得到返回的POI兴趣点集合 poiResult
-                        if(i!=1000){//1000是请求正常
-                            Log.e("Amap","poi Search error code ="+i);
-                        }
-                        else{
-                            //搜索成功
-                            List<PoiItem> poiItemList = poiResult.getPois();
-
-                            for (int index=0;index<poiItemList.size();index++){
-                                //处理每个已经搜索到的兴趣点
-                                Log.e("Amap","搜索到的兴趣点有");
-                                PoiItem item=poiItemList.get(index);
-                                Log.e("Amap","poi title ="+item.getTitle()
-                                        +"latitude = "+item.getLatLonPoint().getLatitude()
-                                        +"longitude = "+item.getLatLonPoint().getLongitude());
-                                //给每个搜索到的定位点画一个标记
-                                addMarkerToMap(item.getLatLonPoint().getLatitude(),item.getLatLonPoint().getLongitude());
-
-                                //默认以第一个兴趣点为我们坐标点
-                                endPoint=new LatLonPoint(item.getLatLonPoint().getLatitude(),item.getLatLonPoint().getLongitude());
-
-                                //画出规划路径
-                                drawRouteLine();
-                                if (index==0){
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                    @Override
-                    public void onPoiItemSearched(PoiItem poiItem, int i) {
-
-                    }
-                });
-                //启动异步搜索
-                poiSearch.searchPOIAsyn();
+                flag=true;
+                Intent poiSearchIntent1 =new Intent(MainActivity.this,PoiSearchPage.class);
+                startActivityForResult(poiSearchIntent1,1);
             }
         });
 
+
+        ll_select_end_location.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                flag=false;
+                Intent poiSearchIntent =new Intent(MainActivity.this,PoiSearchPage.class);
+                startActivityForResult(poiSearchIntent,1);
+            }
+        });
+
+//                //开始搜索POI兴趣点
+//                Log.e("Amap","click");
+//                //拿到用户搜索地址关键词
+//                String startLocation=tv_start_location.getText().toString();
+//                //开始搜索POI
+//                //创建一个搜索条件对象query
+//                PoiSearch.Query query=new PoiSearch.Query("北京","",currentCity);
+//                //创建一个POISearch和query关联
+//                PoiSearch poiSearch=new PoiSearch(getApplicationContext(),query);
+//                //给search绑定一个回调函数
+//                poiSearch.setOnPoiSearchListener(new PoiSearch.OnPoiSearchListener() {
+//                    @Override
+//                    public void onPoiSearched(PoiResult poiResult, int i) {
+//                        //处理得到返回的POI兴趣点集合 poiResult
+//                        if(i!=1000){//1000是请求正常
+//                            Log.e("Amap","poi Search error code ="+i);
+//                        }
+//                        else{
+//                            //搜索成功
+//                            List<PoiItem> poiItemList = poiResult.getPois();
+//
+//                            for (int index=0;index<poiItemList.size();index++){
+//                                //处理每个已经搜索到的兴趣点
+//                                Log.e("Amap","搜索到的兴趣点有");
+//                                PoiItem item=poiItemList.get(index);
+//                                Log.e("Amap","poi title ="+item.getTitle()
+//                                        +"latitude = "+item.getLatLonPoint().getLatitude()
+//                                        +"longitude = "+item.getLatLonPoint().getLongitude());
+//                                //给每个搜索到的定位点画一个标记
+//                                addMarkerToMap(item.getLatLonPoint().getLatitude(),item.getLatLonPoint().getLongitude());
+//
+//                                //默认以第一个兴趣点为我们坐标点
+//                                endPoint=new LatLonPoint(item.getLatLonPoint().getLatitude(),item.getLatLonPoint().getLongitude());
+//
+//                                //画出规划路径
+//                                drawRouteLine();
+//                                if (index==0){
+//                                    break;
+//                                }
+//                            }
+//                        }
+//                    }
+//                    @Override
+//                    public void onPoiItemSearched(PoiItem poiItem, int i) {
+//
+//                    }
+//                });
+//                //启动异步搜索
+//                poiSearch.searchPOIAsyn();
+
     }
+
+
 
     //用户选择允许或拒绝后，会回调onRequestPermissionsResult方法, 该方法类似于onActivityResult方法
     @Override
@@ -399,8 +430,49 @@ public class MainActivity extends AppCompatActivity  {
     }
 
 
+    //获取poi界面的返回数据
     @Override
     protected void onActivityResult(int requestCode,int resultCode,Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+     if (resultCode==1) {
+         if (flag) {
+             Bundle bundle = data.getExtras();
+             setStartPoint(bundle);
+         } else {
+             Bundle bundle = data.getExtras();
+             setEndPoint(bundle);
+         }
+     }
     }
+
+    public void setStartPoint(Bundle bundle){
+        tv_start_location.setText(bundle.getString("addressDetail"));
+        double latitude = Double.valueOf(bundle.getString("latitude"));
+        // endPoint.setLatitude(latitude);
+        double longitude = Double.valueOf(bundle.getString("longitude"));
+        //endPoint.setLatitude(longitude);
+        startPoint = new LatLonPoint(latitude, longitude);
+        moveMap(latitude,longitude);
+        addMarkerToMap(latitude,longitude);
+        if(endPoint!=null) {
+            //画出规划路径
+            drawRouteLine();
+        }
+    }
+
+
+
+    public void setEndPoint(Bundle bundle){
+            tv_end_location.setText(bundle.getString("addressDetail"));
+            double latitude = Double.valueOf(bundle.getString("latitude"));
+            // endPoint.setLatitude(latitude);
+            double longitude = Double.valueOf(bundle.getString("longitude"));
+            //endPoint.setLatitude(longitude);
+            endPoint = new LatLonPoint(latitude, longitude);
+              if(startPoint!=null) {
+            //画出规划路径
+            drawRouteLine();
+        }
+    }
+
 }

@@ -36,12 +36,13 @@ import okhttp3.ResponseBody;
 public class LoginPage extends AppCompatActivity {
    // public String url="http://3a27001y01.zicp.vip:80//login?";
     public String url="http://3r2x705117.zicp.vip//login?";
-
+    MyApplication myApp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_page);
+        myApp = (MyApplication) getApplication();
         TextView tv_register=findViewById(R.id.tv_register);//注册字体
         Button bt_login_submit=findViewById(R.id.bt_login_submit);//登入按钮
         final EditText et_login_username=findViewById(R.id.et_login_username);//用户名输入框
@@ -59,8 +60,7 @@ public class LoginPage extends AppCompatActivity {
                 // 获取用户输入的账号和密码以进行验证
                 String account = et_login_username.getText().toString();
                 String password = et_login_pwd.getText().toString();
-
-
+                myApp.setTelephone(account);
                 Intent intent =new Intent(LoginPage.this,MainActivity.class);
                 startActivity(intent);
 
@@ -179,6 +179,7 @@ public class LoginPage extends AppCompatActivity {
                             System.out.println(content);
                             if(content.equals("1")){//如果数据为1则为true
                                 showToastInThread(LoginPage.this, "登入成功");
+                                myApp.setTelephone(account);
                                 Intent intent =new Intent(LoginPage.this,MainActivity.class);
                                 startActivity(intent);
                             }

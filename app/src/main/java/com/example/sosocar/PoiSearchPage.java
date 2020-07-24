@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -174,5 +175,20 @@ public class PoiSearchPage extends AppCompatActivity implements PoiSearch.OnPoiS
     public void setDetailAddress(String detailAddress) {
         et_poi_search.setText(detailAddress);
     }
+
+
+    public void getAddress(PoiAddressBean poiAddressBean){
+        Intent intent=new Intent();
+        Bundle bundle=new Bundle();
+        bundle.putString("addressDetail",poiAddressBean.getDetailAddress());
+        bundle.putString("latitude",poiAddressBean.getLatitude());
+        bundle.putString("longitude",poiAddressBean.getLongitude());
+        intent.putExtras(bundle);
+
+        setResult(1,intent);
+
+        finish();
+    }
+
 }
 

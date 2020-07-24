@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    // 按钮失效时生效，即按钮设置setEnabled(false)
+    <item android:color="@color/azure" android:state_enabled="false"/>
+    // 按钮按下时生效
+    <item android:color="@color/dodger_blue" android:state_pressed="true"/>
+    // 默认值
+    <item android:color="@color/azure"/>
+</selector>
+

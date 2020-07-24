@@ -1,22 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-    <FrameLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".MainActivity">
+
+
+    <com.amap.api.maps.MapView
+        android:id="@+id/map"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".MainActivity">
+        android:layout_height="match_parent" />
 
-
-        <com.amap.api.maps.MapView
-            android:id="@+id/map"
+    <TableLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-
-
-        <TableLayout
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:layout_margin="10dp"
             android:background="@drawable/tablayout_border"
@@ -163,10 +162,20 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="23dp"
                     android:hint="您要去哪儿"
-                    android:textColorHint="#FF919191" />
+                    android:textColorHint="#FF919191"
+                    android:textColor="#FF0F100F"
+                    android:textStyle="bold"/>
 
             </LinearLayout>
-
+            <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
+                android:id="@+id/bt_taxi_hailing"
+                android:layout_width="100dp"
+                android:layout_height="60dp"
+                android:text="点击约车"
+                android:textColor="@color/round_button_text"
+                app:qmui_backgroundColor="@color/round_button_background"
+                app:qmui_borderColor="@color/white"
+                />
         </TableLayout>
 
 
@@ -194,9 +203,8 @@
                 android:textSize="18sp"
                 android:layout_marginBottom="3dp"
                 android:layout_marginStart="80dp"/>
-
-
         </LinearLayout>
+
 
 
     </FrameLayout>

@@ -22,6 +22,7 @@
             android:src="@drawable/person_icon" />
 
         <TextView
+            android:id="@+id/tv_user_phone_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="1867***789"

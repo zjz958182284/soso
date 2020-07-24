@@ -1,6 +1,8 @@
 package com.example.sosocar;
 import android.content.Context;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +19,7 @@ public class PoiKeywordSearchAdapter extends RecyclerView.Adapter<PoiKeywordSear
 
     List<PoiAddressBean> poiAddressBean;
     Context mContext;
+
     public PoiKeywordSearchAdapter(Context context, List<PoiAddressBean> poiAddressBean) {
         this.poiAddressBean  = poiAddressBean;
         this.mContext = context;
@@ -38,7 +41,10 @@ public class PoiKeywordSearchAdapter extends RecyclerView.Adapter<PoiKeywordSear
         holder.ll_item_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                ((PoiSearchPage)mContext).getAddress(poiAddressBean);
                 ((PoiSearchPage)mContext).setDetailAddress(poiAddressBean.getDetailAddress());
+
             }
         });
     }
