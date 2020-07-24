@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -114,7 +115,7 @@ public class MainActivity extends AppCompatActivity  {
     private String appointment;
     private String order_type;
 
-    String createOrderUrl="http://3a27001y01.zicp.vip/order/create";
+    String createOrderUrl=HttpUtil.url+"/create";
 
 
 
@@ -534,10 +535,12 @@ public class MainActivity extends AppCompatActivity  {
         matchingPopupWindow.setContentView(view);//设置PopupWindow布局文件
         matchingPopupWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);//设置PopupWindow宽
         matchingPopupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);//设置PopupWindow高
-        rootView = LayoutInflater.from(this).inflate(R.layout.activity_main, null);//父布局
-        matchingPopupWindow.showAtLocation(rootView, Gravity.BOTTOM, 0, 0);
+        matchingPopupWindow.setBackgroundDrawable(new ColorDrawable(0x000000));
         matchingPopupWindow.setOutsideTouchable(true);
+        matchingPopupWindow.setAnimationStyle(R.style.QMUI_Animation_PopUpMenu);
+        matchingPopupWindow.showAtLocation(getWindow().getDecorView(), Gravity.BOTTOM, 0, 0);
         matchDriver();
+
     }
 
 
@@ -547,9 +550,9 @@ public class MainActivity extends AppCompatActivity  {
         estimatedMoneyPopupWindow.setContentView(view);//设置PopupWindow布局文件
         estimatedMoneyPopupWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);//设置PopupWindow宽
         estimatedMoneyPopupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);//设置PopupWindow高
-        rootView =LayoutInflater.from(this).inflate(R.layout.activity_main, null);//父布局
-        estimatedMoneyPopupWindow.showAtLocation(rootView, Gravity.BOTTOM,0,0);
         estimatedMoneyPopupWindow.setOutsideTouchable(false);//点击外部区域消失
+        estimatedMoneyPopupWindow.setBackgroundDrawable(new ColorDrawable(0x000000));
+        estimatedMoneyPopupWindow.showAtLocation(getWindow().getDecorView(), Gravity.BOTTOM,0,0);
         bt_hail_car=view.findViewById(R.id.bt_hail_car);
 
         bt_hail_car.setOnClickListener(new View.OnClickListener() {
@@ -577,17 +580,15 @@ public class MainActivity extends AppCompatActivity  {
         SimpleDateFormat sdf = new SimpleDateFormat();// 格式化时间
         sdf.applyPattern("yyyy-MM-dd HH:mm:ss");//
         Date date = new Date();// 获取当前时间
-         createTime=date.toString();
-         appointment=date.toString();
+         createTime=sdf.format(date);
+         appointment=sdf.format(date);
 
         order_type="1";
         new Thread(new Runnable() {
             @Override
             public void run() {
                 OkHttpClient okHttpClient=HttpUtil.client; //采用单例模式，因为这个OkhttpClient不需要每次都实例化
-//                        .Builder()
-//                        .connectTimeout(10000, TimeUnit.MILLISECONDS)
-//                        .build();
+//
                 JSONObject jsonObject=new JSONObject();
                            jsonObject.put("telephone",tv_user_phone_number.getText().toString().trim());
                            jsonObject.put("city",city);
@@ -599,6 +600,7 @@ public class MainActivity extends AppCompatActivity  {
                            jsonObject.put("destination_latitude",destination_latitude);
                            jsonObject.put("createTime",createTime);
                            jsonObject.put("appointment",appointment);
+                           jsonObject.put("order_type",1);
                 RequestBody requestBody=RequestBody.create(HttpUtil.Json,jsonObject.toJSONString());
                          Request  request=new Request
                         .Builder()
@@ -627,6 +629,7 @@ public class MainActivity extends AppCompatActivity  {
                             showMatchSuccessWindow();
                             matchingPopupWindow.dismiss();
                         }
+                        response.close();
                     }
                 });
             }

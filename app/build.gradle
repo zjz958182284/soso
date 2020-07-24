@@ -9,14 +9,14 @@ android {
         debug {
 
 
-            storeFile file('C:\\Users\\user\\.android\\debug.keystore')
+            storeFile file('D:\\Android_sdk\\.android\\debug.keystore')
             storePassword "android"
             keyAlias "androiddebugkey"
             keyPassword "android"
         }
         //发布版的keystore
         release {
-            storeFile file('D:\\soso\\soso\\jksTest.jks')
+            storeFile file('D:\\sosoCar\\jksTest.jks')
             storePassword "123456"
             keyAlias "test"
             keyPassword "123456"

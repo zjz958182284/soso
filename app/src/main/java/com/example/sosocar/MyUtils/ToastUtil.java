@@ -4,7 +4,10 @@
 package com.example.sosocar.MyUtils;
 
 import android.content.Context;
+import android.view.WindowManager;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class ToastUtil {
 
@@ -14,6 +17,13 @@ public class ToastUtil {
 
 	public static void show(Context context, int info) {
 		Toast.makeText(context, info, Toast.LENGTH_LONG).show();
+	}
+
+	public static void setBackgroundAlpha(AppCompatActivity activity, float bgAlpha) {
+		WindowManager.LayoutParams lp = activity.getWindow()
+				.getAttributes();
+		lp.alpha = bgAlpha;
+		(activity).getWindow().setAttributes(lp);
 	}
 	
 	public static void showerror(Context context, int rCode){
