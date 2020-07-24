@@ -48,6 +48,7 @@ public class LoginPage extends AppCompatActivity {
         Button bt_login_submit=findViewById(R.id.bt_login_submit);//登入按钮
         final EditText et_login_username=findViewById(R.id.et_login_username);//用户名输入框
         final EditText et_login_pwd=findViewById(R.id.et_login_pwd);//密码输入框
+        et_login_username.setText("15623906783");
 
         setOnFocusChangeErrMsg(et_login_username, "phone", "手机号格式不正确");//当输入账号FocusChange时，校验账号是否是手机号
         setOnFocusChangeErrMsg(et_login_pwd, "password", "密码必须不少于6位");//当输入密码FocusChange时，校验密码是否不少于6位

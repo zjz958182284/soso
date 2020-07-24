@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -46,8 +47,6 @@ import com.amap.api.services.route.RouteSearch;
 import com.amap.api.services.route.WalkRouteResult;
 import com.example.sosocar.MyUtils.HttpUtil;
 import com.example.sosocar.driveroute.DrivingRouteOverlay;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -65,6 +64,10 @@ import okhttp3.Response;
 import okhttp3.ResponseBody;
 
 public class MainActivity extends AppCompatActivity  {
+
+    String createOrderUrl="http://3a27001y01.zicp.vip//order/create";
+    String matchOrderUrl="http://3a27001y01.zicp.vip//order/match";
+    String driverPositionUrl="http://3a27001y01.zicp.vip//driver/driverPosition";
     //布局控件
     private DrawerLayout mDrawerLayout;
     private LinearLayout mTrip,mAccount,mInfo, ll_select_start_location, ll_select_end_location,mReserveTime;
@@ -115,9 +118,11 @@ public class MainActivity extends AppCompatActivity  {
     private String appointment;
     private String order_type;
 
-    String createOrderUrl=HttpUtil.url+"/create";
+
+    String createOrderUrl_=HttpUtil.url+"/create";
 
 
+    private String id="20200722110350";
 
 
     @Override
@@ -147,6 +152,7 @@ public class MainActivity extends AppCompatActivity  {
         requestPermissions();
         //开始定位
         initLoc();
+        getDriverPosition();
         doPOISearch();
     }
 
@@ -234,6 +240,7 @@ public class MainActivity extends AppCompatActivity  {
                         city=aMapLocation.getCity();
                         origin_latitude=Double.toString(aMapLocation.getLatitude());
                         origin_longitude=Double.toString(aMapLocation.getLongitude());
+
 
                         if(isAddSelfMarker==false) {
                             aMapLocation.setLatitude(39.9042);//北京的经度
@@ -497,8 +504,8 @@ public class MainActivity extends AppCompatActivity  {
         // endPoint.setLatitude(latitude);
         double longitude = Double.valueOf(bundle.getString("longitude"));
         //endPoint.setLatitude(longitude);
-        origin_longitude=bundle.getString("longitude");
-        origin_latitude=bundle.getString("latitude");
+        origin_longitude=Double.toString(longitude);
+        origin_latitude=Double.toString(latitude);
         origin_address=bundle.getString("addressDetail");
         city=bundle.getString("city");
         startPoint = new LatLonPoint(latitude, longitude);
@@ -518,8 +525,8 @@ public class MainActivity extends AppCompatActivity  {
         // endPoint.setLatitude(latitude);
         double longitude = Double.valueOf(bundle.getString("longitude"));
         //endPoint.setLatitude(longitude);
-        destination_longitude=bundle.getString("longitude");
-        destination_latitude=bundle.getString("latitude");
+        destination_longitude=Double.toString(longitude);
+        destination_latitude=Double.toString(latitude);
         destination_address=bundle.getString("addressDetail");
         endPoint = new LatLonPoint(latitude, longitude);
         if(startPoint!=null) {
@@ -535,12 +542,29 @@ public class MainActivity extends AppCompatActivity  {
         matchingPopupWindow.setContentView(view);//设置PopupWindow布局文件
         matchingPopupWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);//设置PopupWindow宽
         matchingPopupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);//设置PopupWindow高
-        matchingPopupWindow.setBackgroundDrawable(new ColorDrawable(0x000000));
-        matchingPopupWindow.setOutsideTouchable(true);
-        matchingPopupWindow.setAnimationStyle(R.style.QMUI_Animation_PopUpMenu);
-        matchingPopupWindow.showAtLocation(getWindow().getDecorView(), Gravity.BOTTOM, 0, 0);
-        matchDriver();
+        rootView = LayoutInflater.from(this).inflate(R.layout.activity_main, null);//父布局
+        matchingPopupWindow.showAtLocation(rootView, Gravity.BOTTOM, 0, 0);
+        matchingPopupWindow.setOutsideTouchable(false);
+        // 设置popWindow弹出窗体可点击
+        matchingPopupWindow.setFocusable(true);
+        // 实例化一个ColorDrawable颜色为半透明
+        ColorDrawable dw = new ColorDrawable(0xb0000000);
+        matchingPopupWindow.setBackgroundDrawable(dw);
+        matchingPopupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        // 设置popWindow的显示和消失动画
+//        matchingPopupWindow.setAnimationStyle(R.style.mypopwindow_anim_style);
+        // 在底部显示
+        matchingPopupWindow.showAtLocation(rootView, Gravity.BOTTOM,0,0);
 
+        matchingPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                System.out.println("popWindow消失");
+                matchingPopupWindow.dismiss();
+            }
+        });
+
+        createOrder();
     }
 
 
@@ -550,9 +574,16 @@ public class MainActivity extends AppCompatActivity  {
         estimatedMoneyPopupWindow.setContentView(view);//设置PopupWindow布局文件
         estimatedMoneyPopupWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);//设置PopupWindow宽
         estimatedMoneyPopupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);//设置PopupWindow高
+
+        rootView =LayoutInflater.from(this).inflate(R.layout.activity_main, null);//父布局
+        estimatedMoneyPopupWindow.setFocusable(true);
         estimatedMoneyPopupWindow.setOutsideTouchable(false);//点击外部区域消失
-        estimatedMoneyPopupWindow.setBackgroundDrawable(new ColorDrawable(0x000000));
-        estimatedMoneyPopupWindow.showAtLocation(getWindow().getDecorView(), Gravity.BOTTOM,0,0);
+        ColorDrawable dw = new ColorDrawable(0xb0000000);
+        estimatedMoneyPopupWindow.setBackgroundDrawable(dw);
+        // 设置popWindow的显示和消失动画
+//        estimatedMoneyPopupWindow.setAnimationStyle(R.style.mypopwindow_anim_style);
+        estimatedMoneyPopupWindow.showAtLocation(rootView, Gravity.BOTTOM,0,0);
+
         bt_hail_car=view.findViewById(R.id.bt_hail_car);
 
         bt_hail_car.setOnClickListener(new View.OnClickListener() {
@@ -562,47 +593,74 @@ public class MainActivity extends AppCompatActivity  {
                 estimatedMoneyPopupWindow.dismiss();
             }
         });
+        estimatedMoneyPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                System.out.println("popWindow消失");
+                estimatedMoneyPopupWindow.dismiss();
+            }
+        });
     }
 
     public void showMatchSuccessWindow(){
+        Log.d("Activity ","use showMatchSuccessWindow");
         View view= LayoutInflater.from(this).inflate(R.layout.match_success,null);
         matchSuccessPopupWindow=new PopupWindow(this);
         matchSuccessPopupWindow.setContentView(view);//设置PopupWindow布局文件
         matchSuccessPopupWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);//设置PopupWindow宽
         matchSuccessPopupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);//设置PopupWindow高
         rootView =LayoutInflater.from(this).inflate(R.layout.activity_main, null);//父布局
+        matchSuccessPopupWindow.setFocusable(true);
+        matchSuccessPopupWindow.setOutsideTouchable(false);//点击外部区域消失
+        ColorDrawable dw = new ColorDrawable(0xb0000000);
+        matchSuccessPopupWindow.setBackgroundDrawable(dw);
+        // 设置popWindow的显示和消失动画
+//        matchSuccessPopupWindow.setAnimationStyle(R.style.mypopwindow_anim_style);
+        // 在底部显示
         matchSuccessPopupWindow.showAtLocation(rootView, Gravity.BOTTOM,0,0);
-        matchSuccessPopupWindow.setOutsideTouchable(true);//点击外部区域消失
+        matchSuccessPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                System.out.println("popWindow消失");
+                matchSuccessPopupWindow.dismiss();
+            }
+        });
 
     }
 
-    public void matchDriver(){
+    public void createOrder(){
         SimpleDateFormat sdf = new SimpleDateFormat();// 格式化时间
         sdf.applyPattern("yyyy-MM-dd HH:mm:ss");//
         Date date = new Date();// 获取当前时间
+
          createTime=sdf.format(date);
          appointment=sdf.format(date);
+        order_type="0";
 
-        order_type="1";
+        Log.d("Activity ","use matchDriver");
+        Log.d("Activity ",createTime);
         new Thread(new Runnable() {
             @Override
             public void run() {
                 OkHttpClient okHttpClient=HttpUtil.client; //采用单例模式，因为这个OkhttpClient不需要每次都实例化
 //
                 JSONObject jsonObject=new JSONObject();
-                           jsonObject.put("telephone",tv_user_phone_number.getText().toString().trim());
-                           jsonObject.put("city",city);
-                           jsonObject.put("origin_address",origin_address);
-                           jsonObject.put("origin_longitude",origin_longitude);
-                           jsonObject.put("origin_latitude",origin_latitude);
-                           jsonObject.put("destination_address",destination_address);
-                           jsonObject.put("destination_longitude",destination_longitude);
-                           jsonObject.put("destination_latitude",destination_latitude);
-                           jsonObject.put("createTime",createTime);
-                           jsonObject.put("appointment",appointment);
-                           jsonObject.put("order_type",1);
+
+                Log.d("Activity ","use matchDriver2");
+                jsonObject.put("telephone",tv_user_phone_number.getText().toString().trim());
+                jsonObject.put("city",city);
+                jsonObject.put("origin_address",origin_address);
+                jsonObject.put("origin_longitude",origin_longitude);
+                jsonObject.put("origin_latitude",origin_latitude);
+                jsonObject.put("destination_address",destination_address);
+                jsonObject.put("destination_longitude",destination_longitude);
+                jsonObject.put("destination_latitude",destination_latitude);
+                jsonObject.put("createTime",createTime);
+                jsonObject.put("appointment",appointment);
+                jsonObject.put("order_type",order_type);
+
                 RequestBody requestBody=RequestBody.create(HttpUtil.Json,jsonObject.toJSONString());
-                         Request  request=new Request
+                Request  request=new Request
                         .Builder()
                         .post(requestBody)
                         .url(createOrderUrl)
@@ -618,22 +676,26 @@ public class MainActivity extends AppCompatActivity  {
                     @Override
                     public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                         int code=response.code();
-                        Log.d("Testing ","code-->"+code);
-                        if(code== HttpURLConnection.HTTP_OK){
+                        Log.d("Activity ","code-->"+code);
+                        if(code== HttpURLConnection.HTTP_OK || code==HttpURLConnection.HTTP_RESET){
                             ResponseBody body=response.body();
                             String responseBodyStr=body.string();//把内容转成字符串类型
-                            JsonObject responseBodyJsonObject=(JsonObject) new JsonParser().parse(responseBodyStr);
-                            String id=responseBodyJsonObject.get("id").getAsString();//获取id字段的值
-                            System.out.println(id);
-                            showToastInThread(MainActivity.this, "订单号为："+id);
-                            showMatchSuccessWindow();
-                            matchingPopupWindow.dismiss();
+                           // JsonParser jsonParser=new JsonParser();
+                            //JsonObject jsonObject=jsonParser.parse(responseBodyStr).getAsJsonObject();
+                            //JsonObject responseBodyJsonObject=(JsonObject) new JsonParser().parse(responseBodyStr);
+                           // String id=jsonObject.get("id").getAsString();//获取id字段的值
+                            System.out.println(responseBodyStr);
+                            Log.d("Activity ","订单号为:responseBodyStr-->"+responseBodyStr);
+                            showToastInThread(MainActivity.this, "订单号为："+responseBodyStr);
+                            //id=responseBodyStr;
+                            id="20200722110350";
                         }
                         response.close();
                     }
                 });
             }
         }).start();
+        matchOrder();
 
     }
 
@@ -644,6 +706,89 @@ public class MainActivity extends AppCompatActivity  {
             @Override
             public void run() {
                 Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void matchOrder(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                OkHttpClient okHttpClient=HttpUtil.client; //采用单例模式，因为这个OkhttpClient不需要每次都实例化
+//                        .Builder()
+//                        .connectTimeout(10000, TimeUnit.MILLISECONDS)
+//                        .build();
+                JSONObject jsonObject=new JSONObject();
+                jsonObject.put("id","20200722110350");
+                jsonObject.put("telephone","123");
+                jsonObject.put("city",city);
+                jsonObject.put("origin_address",origin_address);
+                jsonObject.put("origin_longitude",origin_longitude);
+                jsonObject.put("origin_latitude",origin_latitude);
+                jsonObject.put("destination_address",destination_address);
+                jsonObject.put("destination_longitude",destination_longitude);
+                jsonObject.put("destination_latitude",destination_latitude);
+                jsonObject.put("createTime",createTime);
+                jsonObject.put("appointment",appointment);
+                jsonObject.put("order_type",order_type);
+                RequestBody requestBody=RequestBody.create(HttpUtil.Json,jsonObject.toJSONString());
+                Request  request=new Request
+                        .Builder()
+                        .post(requestBody)
+                        .url(matchOrderUrl)
+                        .build();
+
+                Call task=okHttpClient.newCall(request);
+                task.enqueue(new Callback() {
+                    @Override
+                    public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                        Log.d("Activity ","onFailure->"+e.toString());
+                    }
+
+                    @Override
+                    public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                        int code=response.code();
+                        Log.d("Activity ","code-->"+code);
+                        if(code== HttpURLConnection.HTTP_OK || code==HttpURLConnection.HTTP_RESET){
+                            final String body = response.body().string();
+                            Log.d("Activity ","responseBodyStr-->"+body);
+//                           JSONObject jsonObject=JSONObject.parseObject(body);
+//                           String content=jsonObject.getString("id");
+                            Log.d("Activity ","responseBodyStr-->"+body);
+                           // System.out.println(content);
+                            //Log.d("Activity ","content-->"+content);
+                            showToastInThread(MainActivity.this, "内容为："+body);
+
+
+                        }
+                    }
+                });
+            }
+        }).start();
+        showMatchSuccessWindow();
+        matchingPopupWindow.dismiss();
+    }
+
+
+
+    public void getDriverPosition(){
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url(driverPositionUrl)
+                .build();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.d("Activity ","onFailure->"+e.toString());
+            }
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Log.d("Activity ","code-->"+response.code());
+                if(response.isSuccessful()){//回调的方法执行在子线程。
+                    Log.d("Activity","获取数据成功了");
+                    Log.d("Activity","response.code()=="+response.code());
+                    Log.d("Activity","response.body().string()=="+response.body().string());
+                }
             }
         });
     }

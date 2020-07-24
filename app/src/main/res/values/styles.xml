@@ -6,8 +6,13 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:windowBackground">@color/white</item>
 
+    </style>
+
+    <style name="mypopwindow_anim_style">
+    <item name="android:windowEnterAnimation">@anim/popshow_anim</item>
+
+    <item name="android:windowExitAnimation">@anim/pophidden_anim</item>
     </style>
 
 </resources>

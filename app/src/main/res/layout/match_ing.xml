@@ -63,6 +63,7 @@
 
         android:layout_height="match_parent">
 
+
         <TextView
             android:padding="5dp"
             android:id="@+id/tv_waiting_time"
