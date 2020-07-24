@@ -56,7 +56,7 @@
                 android:background="@null"
                 android:hint="您在哪下车"
                 android:textColorHint="#FFC5C7C5"
-                android:textCursorDrawable="#FFFF5810" />
+                android:textCursorDrawable="@color/font_orange" />
 
 
             <Button

@@ -3,20 +3,15 @@ package com.example.sosocar.driveroute;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.amap.api.services.route.DrivePath;
 import com.amap.api.services.route.DriveRouteResult;
-import com.amap.api.services.route.DriveStep;
-import com.amap.api.services.route.TMC;
 
 import com.example.sosocar.R;
-import com.example.sosocar.driveroute.util.AMapUtil;
-
-import java.util.List;
+import com.example.sosocar.MyUtils.AMapUtil;
 
 
 public class DriveRouteDetailActivity extends Activity {

@@ -1,9 +1,12 @@
 package com.example.sosocar.Entity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserBean {
+public class UserBean implements Serializable {
+
+    private static final long serialVersionUID = -2968300936497842822L;
     private String telephone;
     //密码
     private String password;

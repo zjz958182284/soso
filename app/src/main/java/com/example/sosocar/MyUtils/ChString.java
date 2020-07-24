@@ -1,4 +1,4 @@
-package com.example.sosocar.driveroute.util;
+package com.example.sosocar.MyUtils;
 
 public class ChString {
 	public static final String Kilometer = "\u516c\u91cc";// "公里";

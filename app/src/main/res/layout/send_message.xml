@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:paddingLeft="50dp"
+    android:paddingTop="8dp"
+    android:paddingRight="15dp"
+    android:paddingBottom="8dp"
+    android:layoutDirection="rtl"
+    android:layout_height="wrap_content">
+
+    <com.example.sosocar.View.CircleImageView
+        android:id="@+id/my_photo"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center"
+        android:src="@mipmap/head_photo"/>
+
+    <EditText
+        android:id="@+id/send_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/me"
+        android:textCursorDrawable="@color/background_gray"
+        android:padding="25dp"
+        android:textSize="20dp"
+        android:text=""/>
+
+
+</LinearLayout>

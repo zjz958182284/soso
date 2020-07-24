@@ -1,9 +1,8 @@
 package com.example.sosocar;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,7 +11,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.sosocar.MyUtils.IpUtils;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -26,16 +27,15 @@ import java.util.regex.Pattern;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
-import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 
 public class LoginPage extends AppCompatActivity {
    // public String url="http://3a27001y01.zicp.vip:80//login?";
     public String url="http://3r2x705117.zicp.vip//login?";
+      String ip=IpUtils.GetNetIp();
 
 
     @Override
@@ -87,6 +87,7 @@ public class LoginPage extends AppCompatActivity {
         });
 
     }
+
 
     // 校验账号不能为空且必须是中国大陆手机号
     private boolean isTelphoneValid(String account) {
@@ -147,13 +148,16 @@ public class LoginPage extends AppCompatActivity {
 //                        .Builder()
 //                        .connectTimeout(10000, TimeUnit.MILLISECONDS)
 //                        .build();
+
+
+
                 //建立表单
                 FormBody formBody =new FormBody
                         .Builder()
                         .add("telephone",account)
                         .add("password",password)
+                        .add("ip",ip)
                         .build();
-
                 Request request=new Request
                         .Builder()
                 .post(formBody)
@@ -178,6 +182,11 @@ public class LoginPage extends AppCompatActivity {
                             String content=responseBodyJsonObject.get("content").getAsString();//获取content字段的值
                             System.out.println(content);
                             if(content.equals("1")){//如果数据为1则为true
+                                SharedPreferences sp=getApplicationContext().getSharedPreferences("mInfo",MODE_PRIVATE);
+                                SharedPreferences.Editor editor=sp.edit();
+                                editor.putString("phone",account);
+                                editor.putString("ip",ip);
+                                editor.apply();
                                 showToastInThread(LoginPage.this, "登入成功");
                                 Intent intent =new Intent(LoginPage.this,MainActivity.class);
                                 startActivity(intent);

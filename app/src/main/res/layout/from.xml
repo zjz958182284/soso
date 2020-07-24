@@ -55,8 +55,11 @@
             android:layout_marginLeft="8dp"
             android:background="@null"
             android:hint="您在哪上车"
+            android:paddingRight="15dp"
+            android:maxLines="1"
+            android:ellipsize="end"
             android:textColorHint="#FFC5C7C5"
-            android:textCursorDrawable="#FFFF5810" />
+            android:textCursorDrawable="@color/font_orange" />
 
 
         <Button

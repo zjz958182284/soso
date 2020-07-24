@@ -4,36 +4,29 @@ package com.example.sosocar.View;
 
 
 import android.content.Context;
-
 import android.content.res.TypedArray;
-
 import android.graphics.Bitmap;
-
+import android.graphics.BitmapFactory;
 import android.graphics.BitmapShader;
-
 import android.graphics.Canvas;
-
 import android.graphics.Color;
-
 import android.graphics.Matrix;
-
 import android.graphics.Paint;
-
 import android.graphics.RectF;
-
 import android.graphics.Shader;
-
 import android.graphics.drawable.BitmapDrawable;
-
 import android.graphics.drawable.ColorDrawable;
-
 import android.graphics.drawable.Drawable;
-
+import android.net.Uri;
 import android.util.AttributeSet;
 
-import android.widget.ImageView;
+import androidx.annotation.Nullable;
 
 import com.example.sosocar.R;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 
 
 public class CircleImageView extends androidx.appcompat.widget.AppCompatImageView {
@@ -206,6 +199,18 @@ public class CircleImageView extends androidx.appcompat.widget.AppCompatImageVie
 
     }
 
+    public void setBitmapByUrl(String urlpath){
+        try {
+            URL url=new URL(urlpath);
+            InputStream is=url.openStream();
+            Bitmap bitmap= BitmapFactory.decodeStream(is);
+            super.setImageBitmap(bitmap);
+            this.mBitmap=bitmap;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
 
 
     public int getBorderColor() {
@@ -274,6 +279,12 @@ public class CircleImageView extends androidx.appcompat.widget.AppCompatImageVie
 
     }
 
+    @Override
+    public void setImageURI(@Nullable Uri uri) {
+        super.setImageURI(uri);
+
+
+    }
 
 
     @Override

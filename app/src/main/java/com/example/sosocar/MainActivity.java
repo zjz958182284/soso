@@ -1,14 +1,8 @@
 package com.example.sosocar;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -17,7 +11,11 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
@@ -25,7 +23,6 @@ import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.CameraUpdateFactory;
-import com.amap.api.maps.LocationSource;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.UiSettings;
 import com.amap.api.maps.model.LatLng;
@@ -74,6 +71,10 @@ public class MainActivity extends AppCompatActivity  {
     private Marker selfMarker=null;
     boolean isAddSelfMarker=false;
     private String currentCity;//当前所在城市
+
+
+    //请求Activity回转参数
+    private final int REQUEST_END=0;
 
     @Override
    protected void onCreate(Bundle savedInstanceState) {
@@ -335,7 +336,7 @@ public class MainActivity extends AppCompatActivity  {
             public void onClick(View v) {
 
                 Intent poiSearchIntent =new Intent(MainActivity.this,PoiSearchPage.class);
-                startActivity(poiSearchIntent);
+                startActivityForResult(poiSearchIntent,REQUEST_END);
 
                 //开始搜索POI兴趣点
                 Log.e("Amap","click");
@@ -374,7 +375,7 @@ public class MainActivity extends AppCompatActivity  {
                                 //画出规划路径
                                 drawRouteLine();
                                 if (index==0){
-                                    break;
+                                break;
                                 }
                             }
                         }
@@ -402,5 +403,9 @@ public class MainActivity extends AppCompatActivity  {
     @Override
     protected void onActivityResult(int requestCode,int resultCode,Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==REQUEST_END&&resultCode==RESULT_OK){
+
+
+        }
     }
 }

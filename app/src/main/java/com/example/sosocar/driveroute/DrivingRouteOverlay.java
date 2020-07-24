@@ -18,7 +18,7 @@ import com.amap.api.services.route.DriveStep;
 import com.amap.api.services.route.TMC;
 
 import com.example.sosocar.R;
-import com.example.sosocar.driveroute.util.AMapUtil;
+import com.example.sosocar.MyUtils.AMapUtil;
 
 import java.util.ArrayList;
 import java.util.List;
