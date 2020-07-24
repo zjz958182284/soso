@@ -455,12 +455,14 @@ public class Chat extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     JSONObject jsonObject = JSON.parseObject(response.body().string());
                     JSONArray jsonArray = jsonObject.getJSONArray("records");
-                    for (int i = 0; i < jsonArray.size(); ++i)
+                    for (int i = 0; i < jsonArray.size(); ++i) {
                         jsonObject = jsonArray.getJSONObject(i);
-                    String record = jsonObject.getString("record");
-                    String date = jsonObject.getString("charTime");
-                    StoreNativeChatRecord(record, Message.heSend, date);
-                    messages.add(new Message(record, Message.heSend));
+                        String record = jsonObject.getString("record");
+                        String date = jsonObject.getString("charTime");
+                        StoreNativeChatRecord(record, Message.heSend, date);
+                        messages.add(new Message(record, Message.heSend));
+                    }
+                    deleteHttpRecords();
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {

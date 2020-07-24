@@ -268,5 +268,5 @@ public class DriverBean implements Serializable {
     private String city;
 
 
-    private List<OrderListBean> orderLists=new ArrayList<>();
+   transient private List<OrderListBean> orderLists=new ArrayList<>();
 }
