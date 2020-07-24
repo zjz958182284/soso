@@ -596,7 +596,6 @@ public class MainActivity extends AppCompatActivity  {
                            jsonObject.put("origin_latitude",origin_latitude);
                            jsonObject.put("destination_address",destination_address);
                            jsonObject.put("destination_longitude",destination_longitude);
-                           jsonObject.put("destination_address",destination_address);
                            jsonObject.put("destination_latitude",destination_latitude);
                            jsonObject.put("createTime",createTime);
                            jsonObject.put("appointment",appointment);
