@@ -30,7 +30,7 @@
         android:id="@+id/remark_star"
         android:layout_width="276dp"
         android:layout_height="wrap_content"
-        android:isIndicator="true"
+        android:isIndicator="false"
         android:numStars="5"
         android:layout_gravity="center_horizontal"
         android:padding="18dp"

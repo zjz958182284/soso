@@ -180,7 +180,7 @@
                 android:layout_marginLeft="25dp"
                 android:text="立即使用"
                 android:textSize="16dp"
-                android:background="@drawable/cancel_reason_button"
+                android:background="@drawable/cancel_reason_button"/>
 
 
         </LinearLayout>
@@ -300,7 +300,7 @@
                     android:layout_marginLeft="25dp"
                     android:text="立即使用"
                     android:textSize="16dp"
-                    android:background="@drawable/cancel_reason_button"
+                    android:background="@drawable/cancel_reason_button"/>
 
 
             </LinearLayout>
@@ -420,7 +420,7 @@
                     android:layout_marginLeft="25dp"
                     android:text="立即使用"
                     android:textSize="16dp"
-                    android:background="@drawable/cancel_reason_button"
+                    android:background="@drawable/cancel_reason_button"/>
 
 
             </LinearLayout>
