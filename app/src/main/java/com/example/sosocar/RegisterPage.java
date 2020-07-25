@@ -1,7 +1,5 @@
 package com.example.sosocar;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,7 +9,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.sosocar.Entity.UserBean;
+import com.example.sosocar.MyUtils.HttpUtil;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -35,7 +36,7 @@ import okhttp3.ResponseBody;
 
 public class RegisterPage extends AppCompatActivity {
     //public String url="http://3a27001y01.zicp.vip:80/registered";
-    public String url="http://3r2x705117.zicp.vip//registered";
+    public String url= HttpUtil.url+ "/registered";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

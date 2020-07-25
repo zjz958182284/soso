@@ -2,8 +2,6 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardCornerRadius="8dp"
-
     android:layout_margin="13dp"
     android:layout_height="220dp">
 
@@ -62,7 +60,7 @@
                     android:layout_height="match_parent">
 
 
-                    <com.example.sosocar.View.CircleImageView
+                    <ImageView
                         android:id="@+id/driver_icon"
                         android:layout_width="60dp"
                         android:layout_height="60dp"
@@ -122,6 +120,7 @@
                         android:layout_marginTop="4dp"
                         android:layout_marginRight="24dp"
                         android:scaleType="fitCenter"
+                        android:background="@color/white"
                         android:src="@drawable/chat"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -160,7 +159,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
                         android:layout_marginTop="17dp"
-                        android:text="5.0分"
+                        android:text="3.5分"
                         android:textColor="#FFFF5810"
                         android:textSize="12dp"
                         app:layout_constraintLeft_toRightOf="@id/driver_rating_star"

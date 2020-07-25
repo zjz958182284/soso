@@ -25,6 +25,7 @@ import com.example.sosocar.Controll.ChatRecordHelper;
 import com.example.sosocar.Entity.DriverBean;
 import com.example.sosocar.Entity.Message;
 import com.example.sosocar.Entity.UserBean;
+import com.example.sosocar.MyApplication;
 import com.example.sosocar.MyUtils.HttpUtil;
 import com.example.sosocar.MyUtils.ToastUtil;
 import com.example.sosocar.R;
@@ -50,7 +51,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class Chat extends AppCompatActivity {
-    private UserBean me; //我 /test/
+    private UserBean me=new UserBean(); //我 /test/
     private DriverBean he;//对方用户  /test/
     private  LinkedList<Message> messages=new LinkedList<Message>();
     private ChatListViewAdapter listViewAdapter;
@@ -66,6 +67,9 @@ public class Chat extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chat_page);
+        Intent intent =new Intent();
+        he= (DriverBean) intent.getSerializableExtra("diver");
+        me.setTelephone(MyApplication.telephone);
 
         Thread thread=new Thread(new Runnable() {
             @Override

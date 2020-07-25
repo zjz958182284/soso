@@ -2,7 +2,6 @@ package com.example.sosocar;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.sosocar.MyUtils.HttpUtil;
 import com.example.sosocar.MyUtils.IpUtils;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -34,8 +34,8 @@ import okhttp3.ResponseBody;
 
 public class LoginPage extends AppCompatActivity {
    // public String url="http://3a27001y01.zicp.vip:80//login?";
-    public String url="http://3r2x705117.zicp.vip//login?";
-      String ip=IpUtils.GetNetIp();
+    public String url= HttpUtil.url+"/login?";
+
 
     MyApplication myApp;
 
@@ -44,11 +44,18 @@ public class LoginPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_page);
         myApp = (MyApplication) getApplication();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                myApp.setIp(IpUtils.GetNetIp());
+                System.out.println(myApp.getIp());
+            }
+        }).start();
         TextView tv_register=findViewById(R.id.tv_register);//注册字体
         Button bt_login_submit=findViewById(R.id.bt_login_submit);//登入按钮
         final EditText et_login_username=findViewById(R.id.et_login_username);//用户名输入框
         final EditText et_login_pwd=findViewById(R.id.et_login_pwd);//密码输入框
-        et_login_username.setText("15623906783");
 
         setOnFocusChangeErrMsg(et_login_username, "phone", "手机号格式不正确");//当输入账号FocusChange时，校验账号是否是手机号
         setOnFocusChangeErrMsg(et_login_pwd, "password", "密码必须不少于6位");//当输入密码FocusChange时，校验密码是否不少于6位
@@ -63,18 +70,12 @@ public class LoginPage extends AppCompatActivity {
                 String account = et_login_username.getText().toString();
                 String password = et_login_pwd.getText().toString();
                 myApp.setTelephone(account);
-                Intent intent =new Intent(LoginPage.this,MainActivity.class);
-                startActivity(intent);
-
-
                 et_login_pwd.clearFocus();
                 // 发送URL请求之前,先进行校验
 
                 if (!(isTelphoneValid(account) && isPasswordValid(password))) {
                     Toast.makeText(LoginPage.this, "账户或密码不符合要求", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                asyncValidate(account,password);
+                }else asyncValidate(account,password);
             }
         });
 
@@ -158,7 +159,7 @@ public class LoginPage extends AppCompatActivity {
                         .Builder()
                         .add("telephone",account)
                         .add("password",password)
-                        .add("ip",ip)
+                        .add("ip",myApp.getIp())
                         .build();
                 Request request=new Request
                         .Builder()
@@ -184,11 +185,6 @@ public class LoginPage extends AppCompatActivity {
                             String content=responseBodyJsonObject.get("content").getAsString();//获取content字段的值
                             System.out.println(content);
                             if(content.equals("1")){//如果数据为1则为true
-                                SharedPreferences sp=getApplicationContext().getSharedPreferences("mInfo",MODE_PRIVATE);
-                                SharedPreferences.Editor editor=sp.edit();
-                                editor.putString("phone",account);
-                                editor.putString("ip",ip);
-                                editor.apply();
                                 showToastInThread(LoginPage.this, "登入成功");
                                 myApp.setTelephone(account);
                                 Intent intent =new Intent(LoginPage.this,MainActivity.class);

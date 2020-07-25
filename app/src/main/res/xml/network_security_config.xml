@@ -3,5 +3,7 @@
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">3a27001y01.zicp.vip</domain>
         <domain includeSubdomains="true">3r2x705117.zicp.vip</domain>
+        <domain includeSubdomains="true">pv.sohu.com</domain>
+
     </domain-config>
 </network-security-config>

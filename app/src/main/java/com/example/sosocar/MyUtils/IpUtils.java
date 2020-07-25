@@ -15,7 +15,7 @@ public class IpUtils {
     /**
      * 获取IP地址
      */
-    public static String GetNetIp() {
+    public static String GetNetIp()  {
         URL infoUrl = null;
         InputStream inStream = null;
         String line = "";

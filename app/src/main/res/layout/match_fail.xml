@@ -2,17 +2,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_margin="10dp"
+    android:background="@color/white"
     android:layout_width="match_parent"
     android:layout_height="100dp">
 
    <TextView
        android:layout_width="wrap_content"
        android:layout_height="wrap_content"
-       android:textSize="28dp"
+       android:textSize="23dp"
        android:textColor="#FF101010"
        android:textStyle="bold"
        android:text="匹配超时"
-      android:layout_marginTop="30dp"
+
+      android:layout_gravity="center_vertical"
        android:layout_marginLeft="30dp"/>
 
     <Button

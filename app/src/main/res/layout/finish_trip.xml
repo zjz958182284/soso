@@ -65,6 +65,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="300dp"
             android:layout_marginTop="33dp"
+            android:background="@color/white"
             android:src="@drawable/cursor_right"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -99,7 +100,7 @@
         android:layout_height="wrap_content">
 
 
-        <com.example.sosocar.View.CircleImageView
+        <ImageView
             android:id="@+id/driver_icon"
             android:layout_width="60dp"
             android:layout_height="60dp"
@@ -159,6 +160,7 @@
             android:layout_marginTop="4dp"
             android:layout_marginRight="24dp"
             android:scaleType="fitCenter"
+            android:background="@color/white"
             android:src="@drawable/chat"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

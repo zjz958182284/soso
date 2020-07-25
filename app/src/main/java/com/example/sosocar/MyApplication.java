@@ -4,8 +4,17 @@ import android.app.Application;
 
 public class MyApplication extends Application {
 
-    private String telephone;
+    public static  String telephone;
 
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
+
+   public static  String ip;
     @Override
     public void onCreate() {
         super.onCreate();
