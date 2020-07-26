@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.sosocar">
     <!-- 用于进行网络定位 -->
+    <uses-feature
+        android:name="android.hardware.telephony"
+        android:required="false" />
+
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- 用于访问GPS定位 -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- 获取运营商信息，用于支持提供运营商信息相关的接口 -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- 用于访问wifi网络信息，wifi信息会用于进行网络定位 -->
@@ -15,6 +19,7 @@
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" /> <!-- 在Android10.0里，获取定位权限需要增加以下权限。 -->
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" /> <!-- 打开本地热点需要下面权限 -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
@@ -27,18 +32,22 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".PoiSearchPage"></activity>
-        <activity android:name=".MainActivity">
-
-        </activity>
+        <activity android:name=".View.MyWallet"></activity>
+        <activity android:name=".Pay" />
+        <activity android:name=".CancelOrder" />
+        <activity android:name=".OrderDetail" />
+        <activity android:name=".PoiSearchPage" />
+        <activity
+            android:name=".MainActivity"
+            android:launchMode="singleTask" />
         <activity android:name=".MyInfo" />
         <activity android:name=".MyOrder" />
         <activity android:name=".driveroute.DriveRouteDetailActivity" />
         <activity android:name=".RegisterPage" /> <!-- 高德地图KEY -->
         <!-- 郑健宙的key:3a227e3f7090211183beebb9c81ae8f4 -->
         <!-- 林锋吉的key:08e93c5d2dc64d4904c6dc18fd316c0d -->
-        <!-- D:/Android_sdk/.android   郑建宙的key地址-->
-        <!-- C:/Users\user/.android/debug.keystore 林锋吉的key地址-->
+        <!-- D:/Android_sdk/.android   郑建宙的key地址 -->
+        <!-- C:/Users\user/.android/debug.keystore 林锋吉的key地址 -->
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="3a227e3f7090211183beebb9c81ae8f4" /> <!-- 定位需要的服务 适配Android Q需要加上android:foregroundServiceType="location" -->
@@ -46,16 +55,14 @@
             android:name="com.amap.api.location.APSService"
             android:foregroundServiceType="location" />
 
-        <activity android:name=".LoginPage" >
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
+        <activity android:name=".LoginPage">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
-        <activity android:name=".driveroute.Main4Activity">
-
-        </activity>
+        <activity android:name=".driveroute.Main4Activity" />
     </application>
 
 </manifest>

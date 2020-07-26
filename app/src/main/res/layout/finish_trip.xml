@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_margin="10dp"
+    android:layout_gravity="bottom"
     android:orientation="vertical"
     android:background="@drawable/white_border"
     android:layout_height="wrap_content">
@@ -17,7 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="24dp"
             android:layout_marginTop="4dp"
-            android:text="18.00"
+            android:text="28.00"
             android:textColor="#FFFF5810"
             android:textSize="30dp"
             android:textStyle="bold"
@@ -53,17 +54,17 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="236dp"
             android:layout_marginTop="36dp"
-            android:text="费用明细"
+            android:text="选择优惠卷"
             android:textColor="@color/font_hint"
             android:textSize="14dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
-            android:id="@+id/fee_detail"
+            android:id="@+id/choose_token"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="300dp"
+            android:layout_marginLeft="320dp"
             android:layout_marginTop="33dp"
             android:background="@color/white"
             android:src="@drawable/cursor_right"
@@ -71,11 +72,12 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:id="@+id/discount_fee"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="80dp"
             android:layout_marginTop="4dp"
-            android:text="7元"
+            android:text="0元"
             android:textColor="@color/font_orange"
             android:textSize="14dp"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -211,14 +213,14 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="4dp"
             android:layout_marginTop="22dp"
-            android:text="9651单"
+            android:text="162单"
             android:textColor="#FFFF5810"
             android:textSize="12dp"
             app:layout_constraintLeft_toRightOf="@id/driver_grade"
             app:layout_constraintTop_toBottomOf="@id/calling" />
 
         <Button
-            android:id="@+id/call_police"
+            android:id="@+id/pay"
             android:layout_width="300dp"
             android:layout_height="50dp"
             android:layout_marginLeft="16dp"

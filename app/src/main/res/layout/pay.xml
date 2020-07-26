@@ -77,7 +77,7 @@
             android:id="@+id/discount_fee"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="-18.00元"
+            android:text="-10.00元"
             android:textSize="20dp"
             android:gravity="end"
             android:textColor="@color/font_orange"/>
@@ -102,7 +102,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="24dp"
             android:layout_marginTop="4dp"
-            android:text="8.00"
+            android:text="18.00"
             android:textColor="#FFFF5810"
             android:textSize="30dp"
             android:textStyle="bold"
@@ -181,7 +181,7 @@
         android:layout_width="330dp"
         android:layout_height="50dp"
         android:background="@drawable/cancel_reason_button"
-        android:text="确认支付8.00元"
+        android:text="确认支付18.00元"
         android:textColor="@color/white"
         android:layout_gravity="center_horizontal"
         android:textSize="22dp"/>

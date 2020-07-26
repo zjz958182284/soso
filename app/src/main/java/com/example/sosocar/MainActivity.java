@@ -477,7 +477,7 @@ public class MainActivity extends AppCompatActivity  {
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        //可在此继续其他操作。
+
     }
 
 
@@ -630,7 +630,9 @@ public class MainActivity extends AppCompatActivity  {
         view.findViewById(R.id.success_cancel_order).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent=new Intent(MainActivity.this,CancelOrder.class);
+                intent.putExtra("id",id);
+                startActivity(intent);
             }
         });
 
@@ -684,9 +686,8 @@ public class MainActivity extends AppCompatActivity  {
 //                        .build();
                 final Call task;
                 final JSONObject jsonObject=new JSONObject();
-                jsonObject.put("id","20200722110350");
-                jsonObject.put("telephone","123");
-                jsonObject.put("city",city);
+                jsonObject.put("telephone",MyApplication.telephone);
+                jsonObject.put("city","恩施市");
                 jsonObject.put("origin_address",origin_address);
                 jsonObject.put("origin_longitude",origin_longitude);
                 jsonObject.put("origin_latitude",origin_latitude);
@@ -725,9 +726,6 @@ public class MainActivity extends AppCompatActivity  {
 
                             final String body = response.body().string();
                             Log.e("e",body);
-                           // System.out.println(content);
-                            //Log.d("Activity ","content-->"+content);
-                            showToastInThread(MainActivity.this, "内容为："+body);
 
                             try {
                                 Thread.sleep(3000);
@@ -739,7 +737,9 @@ public class MainActivity extends AppCompatActivity  {
 
 
                             if(jsonObject1.getInteger("code")==200) {
-                                matchedDriver=jsonObject1.toJavaObject(DriverBean.class);
+                               jsonObject1=jsonObject1.getJSONObject("result");
+                               id=jsonObject1.getString("id");
+                               matchedDriver=jsonObject1.getJSONObject("driver").toJavaObject(DriverBean.class);
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
@@ -818,5 +818,11 @@ public class MainActivity extends AppCompatActivity  {
             }
         });
     }
+
+    private void sendTextMessage(String phone){
+        this.requestPermissions(new String[]{Manifest.permission.SEND_SMS},0x123);
+    }
+
+
 
 }

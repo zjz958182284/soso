@@ -26,7 +26,7 @@ public class UserBean implements Serializable {
     private double latitude;
     //城市
     private String city;
-    private List<OrderListBean> orderLists=new ArrayList<>();
+   transient private List<OrderListBean> orderLists=new ArrayList<>();
 
     public String getTelephone() {
         return telephone;

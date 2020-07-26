@@ -67,8 +67,8 @@ public class Chat extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chat_page);
-        Intent intent =new Intent();
-        he= (DriverBean) intent.getSerializableExtra("diver");
+        Intent intent =getIntent();
+        he= (DriverBean) intent.getSerializableExtra("driver");
         me.setTelephone(MyApplication.telephone);
 
         Thread thread=new Thread(new Runnable() {

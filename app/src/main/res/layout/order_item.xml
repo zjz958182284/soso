@@ -21,7 +21,7 @@
             android:layout_height="22dp"
             android:layout_marginLeft="28dp"
             android:layout_marginTop="24dp"
-            android:text="约车"
+            android:text="快车"
             android:textColor="#FF101010"
 
             android:textSize="16dp"
@@ -33,13 +33,13 @@
             android:id="@+id/order_time"
             android:layout_width="wrap_content"
             android:layout_height="22dp"
-            android:layout_marginLeft="40dp"
+            android:layout_marginLeft="20dp"
             android:layout_marginTop="24dp"
             android:text="2020/7/18 17:32"
             android:textColor="#FF101010"
 
             android:textSize="16dp"
-            app:layout_constraintLeft_toLeftOf="@id/order_type"
+            app:layout_constraintLeft_toRightOf="@id/order_type"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -60,7 +60,7 @@
             android:id="@+id/goto_order_detail"
             android:layout_width="wrap_content"
             android:layout_height="14dp"
-            android:layout_marginLeft="104dp"
+            android:layout_marginLeft="85dp"
             android:layout_marginTop="28dp"
             android:layout_marginRight="10dp"
             android:src="@drawable/cursor_right"

@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+
+
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="10dp"
+    android:layout_gravity="bottom"
     android:background="@drawable/white_border"
     android:layout_margin="10dp"
     android:layout_width="match_parent"
@@ -96,7 +100,7 @@
         android:isIndicator="true"
         android:numStars="5"
         android:progressTint="#FFFF580E"
-        android:rating="3.5"
+        android:rating="5"
         android:stepSize="0.5"
 
         app:layout_constraintLeft_toRightOf="@id/driver_name"
@@ -120,7 +124,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="4dp"
         android:layout_marginTop="22dp"
-        android:text="9651单"
+        android:text="162单"
         android:textColor="#FFFF5810"
         android:textSize="12dp"
         app:layout_constraintLeft_toRightOf="@id/driver_grade"

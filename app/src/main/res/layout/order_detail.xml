@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+
+    <com.amap.api.maps.MapView
+        android:id="@+id/order_map"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+    <include layout="@layout/match_success" android:id="@+id/success"
+        android:visibility="gone"/>
+
+    <include layout="@layout/during_trip"
+
+        android:visibility="gone"
+        android:id="@+id/during"/>
+
+    <include layout="@layout/finish_trip" android:id="@+id/finish"
+        android:visibility="gone"/>
+
+    <include layout="@layout/match_fail" android:id="@+id/fail"
+        android:visibility="gone"/>
+
+
+</FrameLayout>

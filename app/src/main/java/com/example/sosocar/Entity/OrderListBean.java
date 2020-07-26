@@ -1,8 +1,5 @@
 package com.example.sosocar.Entity;
 
-import com.example.sosocar.Entity.DriverBean;
-import com.example.sosocar.Entity.UserBean;
-
 import java.util.Date;
 
 public class OrderListBean {
@@ -19,7 +16,7 @@ public class OrderListBean {
     //预约出发时间
 
 
-    private Date Appointment;
+    private Date appointment;
 
     public String getId() {
         return id;
@@ -54,11 +51,11 @@ public class OrderListBean {
     }
 
     public Date getAppointment() {
-        return Appointment;
+        return appointment;
     }
 
     public void setAppointment(Date appointment) {
-        Appointment = appointment;
+        appointment = appointment;
     }
 
     public int getOrder_type() {

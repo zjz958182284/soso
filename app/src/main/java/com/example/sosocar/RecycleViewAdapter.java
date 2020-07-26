@@ -4,20 +4,32 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.sosocar.Entity.OrderListBean;
+
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class RecycleViewAdapter extends RecyclerView.Adapter {
 
-    private List<String> list;
+    private List<OrderListBean> list;
     private LayoutInflater inflater;
-    public RecycleViewAdapter(Context context,List<String> datas) {
+
+    public void setListener(onItemClickListener listener) {
+        this.listener = listener;
+    }
+
+    private  onItemClickListener listener;
+    public RecycleViewAdapter(Context context,List<OrderListBean> datas) {
         super();
         inflater=LayoutInflater.from(context);
         this.list=datas;
+
 
     }
 
@@ -60,51 +72,57 @@ public class RecycleViewAdapter extends RecyclerView.Adapter {
         super.onViewRecycled(holder);
     }
 
-    @Override
-    public boolean onFailedToRecycleView(@NonNull RecyclerView.ViewHolder holder) {
-        return super.onFailedToRecycleView(holder);
-    }
+
 
     @Override
-    public void onViewAttachedToWindow(@NonNull RecyclerView.ViewHolder holder) {
-        super.onViewAttachedToWindow(holder);
-    }
-
-    @Override
-    public void onViewDetachedFromWindow(@NonNull RecyclerView.ViewHolder holder) {
-        super.onViewDetachedFromWindow(holder);
-    }
-
-    @Override
-    public void registerAdapterDataObserver(@NonNull RecyclerView.AdapterDataObserver observer) {
-        super.registerAdapterDataObserver(observer);
-    }
-
-    @Override
-    public void unregisterAdapterDataObserver(@NonNull RecyclerView.AdapterDataObserver observer) {
-        super.unregisterAdapterDataObserver(observer);
-    }
-
-    @Override
-    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
-        super.onAttachedToRecyclerView(recyclerView);
-    }
-
-    @Override
-    public void onDetachedFromRecyclerView(@NonNull RecyclerView recyclerView) {
-        super.onDetachedFromRecyclerView(recyclerView);
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position, @NonNull List payloads) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position, @NonNull List payloads) {
         super.onBindViewHolder(holder, position, payloads);
+      MyViewHolder myViewHolder=(MyViewHolder)holder;
+      OrderListBean bean=list.get(position);
+      myViewHolder.origin.setText(bean.getOrigin_address());
+      myViewHolder.destination.setText(bean.getDestination_address());
+        myViewHolder.order_time.setText(new SimpleDateFormat("yyyy/MM/dd HH:mm").format(bean.getCreateTime()));
+        if(bean.getOrder_type()==1)
+            myViewHolder.order_type.setText("预约");
+        int status=bean.getStatus();
+        switch (status){
+            case 0:myViewHolder.order_status.setText("匹配失败");break;
+            case 2:myViewHolder.order_status.setText("已出发");break;
+            case 3:myViewHolder.order_status.setText("去支付");break;
+            case 4:myViewHolder.order_status.setText("已支付");break;
+            case 5:myViewHolder.order_status.setText("订单取消");break;
+
+        }
+        myViewHolder.goto_order_detail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.itemClick(position);
+            }
+        });
     }
 
 
     class MyViewHolder extends RecyclerView.ViewHolder{
+        private TextView order_type;
+        private  TextView order_time;
+        private  TextView order_status;
+        private  TextView origin;
+        private TextView destination;
+        private ImageButton goto_order_detail;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
+            order_status=itemView.findViewById(R.id.order_status);
+            order_type=itemView.findViewById(R.id.order_type);
+            order_time=itemView.findViewById(R.id.order_time);
+            origin=itemView.findViewById(R.id.origin);
+            destination=itemView.findViewById(R.id.destination);
+            goto_order_detail=itemView.findViewById(R.id.goto_order_detail);
         }
+    }
+
+   public interface onItemClickListener {
+
+        void itemClick(int position);
     }
 }
